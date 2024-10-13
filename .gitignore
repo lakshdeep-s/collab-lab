@@ -1,0 +1,47 @@
+# Node modules (backend and frontend)
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build outputs (frontend and backend)
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables and credentials
+.env
+frontend/.env
+backend/.env
+
+# Cache and lock files
+.cache/
+frontend/.cache/
+backend/.cache/
+frontend/.vite/
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Editor or OS specific files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Lint and test outputs
+coverage/
+.nyc_output/
