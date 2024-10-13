@@ -1,10 +1,11 @@
 import appAssert from "../utils/appAssert.js"
-import { BAD_REQUEST, UNAUTHORIZED } from "../constants/HTTPCodes.js"
+import { BAD_REQUEST, OK, UNAUTHORIZED } from "../constants/HTTPCodes.js"
 import config from "../config/index.js"
 import { registerService } from "../services/register.service.js"
 import { loginService } from "../services/login.service.js"
 import { verifyToken } from "../utils/tokenUtils.js"
 import { refreshService } from "../services/refresh.service.js"
+import { AppErrorCode } from "../constants/AppErrorCodes.js"
 
 export const registerController = async (req, res) => {
   const { username, email, password } = req.body
@@ -57,7 +58,7 @@ export const logoutController = async (req, res) => {
     accessToken,
     "Access token not found",
     UNAUTHORIZED,
-    "UNAUTHORIZED_ACCESS"
+    AppErrorCode.AccessTokenNotFound
   )
 
   const decoded = verifyToken(accessToken)
@@ -71,7 +72,7 @@ export const logoutController = async (req, res) => {
     maxAge: 0,
   })
 
-  return res.status(200).json({
+  return res.status(OK).json({
     message: "User logged out successfully",
   })
 }
@@ -83,14 +84,14 @@ export const refreshHandler = async (req, res) => {
     refreshToken,
     "Refresh token not found",
     UNAUTHORIZED,
-    "UNAUTHORIZED_ACCESS"
+    AppErrorCode.RefreshTokenNotFound
   )
 
   const accessToken = await refreshService(refreshToken)
 
   res.cookie("accessToken", accessToken, config.accessTokenCookieOptions)
 
-  return res.status(200).json({
+  return res.status(OK).json({
     message: "Access token refreshed successfully",
   })
 }

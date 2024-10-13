@@ -7,15 +7,15 @@ const authenticate = (req, res, next) => {
   const accessToken = req.cookies.accessToken
   appAssert(
     accessToken,
-    "Unauthorized",
+    "Access Token Not Found",
     UNAUTHORIZED,
-    AppErrorCode.InvalidAccessToken
+    AppErrorCode.AccessTokenNotFound
   )
 
   const decoded = verifyToken(accessToken)
   appAssert(
     decoded,
-    "Unauthorized",
+    "Invalid Access Token",
     UNAUTHORIZED,
     AppErrorCode.InvalidAccessToken
   )

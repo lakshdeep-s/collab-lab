@@ -13,7 +13,6 @@ export const registerService = async (userData) => {
     !existingUser,
     "User already exists",
     BAD_REQUEST,
-    "DUPLICATE_DB_USER"
   )
 
   const hashedPassword = await bcrypt.hash(password, 10)

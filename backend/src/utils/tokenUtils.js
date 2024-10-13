@@ -2,6 +2,7 @@ import jsonwebtoken from "jsonwebtoken"
 import config from "../config/index.js"
 import { AppError } from "./AppError.js"
 import { UNAUTHORIZED } from "../constants/HTTPCodes.js"
+import { AppErrorCode } from "../constants/AppErrorCodes.js"
 
 export const accessTokenOptions = {
     expiresIn: "20m"
@@ -28,13 +29,16 @@ export const verifyToken = (token, options = {}) => {
     } catch (error) {
         let message = "Invalid Token"
         let statusCode = UNAUTHORIZED
+        let appErrorCode = AppErrorCode.InvalidAccessToken
 
         if (error instanceof jsonwebtoken.TokenExpiredError) {
             message = "Token has expired"
+            appErrorCode = AppErrorCode.AccessTokenExpired
         } else if (error instanceof jsonwebtoken.JsonWebTokenError) {
             message = "Invalid token signature"
+            appErrorCode = AppErrorCode.InvalidAccessToken
         }
 
-        throw new AppError(message, statusCode, "UNAUTHORIZED_ACCESS")
+        throw new AppError(message, statusCode, appErrorCode)
     }
 }

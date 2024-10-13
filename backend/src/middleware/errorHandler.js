@@ -5,17 +5,18 @@ import config from "../config/index.js"
 const handleAppError = (res,err)  => {
   return res.status(err.statusCode).json({
     message: err.message,
-    errorCode: err.errorCode
+    errorCode: err.errorCode,
+    appErrorCode: err.appErrorCode,
   })
 }
 
 const errorHandler = (err, req, res, next) => {
-  // Log the error on the server console (NEED BETTER LOGGING IN PRODUCTION)
   console.error(
     `Error on ${req.path}:`,
     JSON.stringify(
       {
         message: err.message,
+        status: err.status,
         appErrorCode: err.appErrorCode,
       },
       null,

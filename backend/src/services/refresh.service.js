@@ -8,7 +8,6 @@ export const refreshService = async (refreshToken) => {
     appAssert(decoded, "Invalid refresh token", UNAUTHORIZED, AppErrorCode.InvalidRefreshToken)
 
     const accessToken = generateAccessToken({userId: decoded.userId})
-    appAssert(accessToken, "Failed to generate access token", INTERNAL_SERVER_ERROR, "TOKEN_ERROR")
 
     return accessToken
 }
