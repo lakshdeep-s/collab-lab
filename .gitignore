@@ -16,7 +16,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Environment variables and credentials
-/
+# Some more changes later
 
 # Cache and lock files
 .cache/
