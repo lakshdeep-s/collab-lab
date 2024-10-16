@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,6 +6,7 @@
 
 @layer base {
   :root {
+    --brand: #EC8305;
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -33,6 +34,7 @@
     --radius: 0.5rem
   }
   .dark {
+    --brand: #EC8305;
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
@@ -65,5 +67,19 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .centered-fullscreen {
+    @apply flex justify-center items-center
+  }
+}
+
+@layer components {
+
+  /* Auth Components */
+  .form-card {
+    @apply w-[350px] max-w-[350px] flex flex-col gap-8 shadow-xl border border-muted
   }
 }

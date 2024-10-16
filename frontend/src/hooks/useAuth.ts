@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
+import { getAuthenticatedUser } from "@/lib/api"
 
 const useAuth = (options ={}) => {
     const {
@@ -6,9 +7,10 @@ const useAuth = (options ={}) => {
         ...rest
     } = useQuery({
         queryKey: ["user"],
-        queryFn: () => {},
+        queryFn: getAuthenticatedUser,
         staleTime: Infinity
     })
+    return {user, ...rest}
 }
 
 export default useAuth
