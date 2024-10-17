@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllWorkspaces } from "@/lib/api";
 import { WorkspaceData } from "@/types";
-import { sortWorkspaces } from "@/lib/utils";
 
 const useWorkspaces = () => {
   const queryClient = useQueryClient();
@@ -16,9 +15,8 @@ const useWorkspaces = () => {
 
   useEffect(() => {
     if (data?.workspaces?.length) {
-      const sortedWorkspaces = sortWorkspaces([...data.workspaces])
 
-      const latestWorkspace = sortedWorkspaces[0]    
+      const latestWorkspace = data.workspaces[0]    
       setSelectedWorkspace(latestWorkspace.name)
 
       queryClient.setQueryData(
