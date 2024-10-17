@@ -45,6 +45,7 @@ export const logout = async () => {
   try {
     const response = await API.post("/auth/logout")
     queryClient.clear()
+    localStorage.clear()
     return response
   } catch (error) {
     return Promise.reject(error)
@@ -54,6 +55,17 @@ export const logout = async () => {
 export const getAllWorkspaces = async () => {
   try {
     const response = await API.get("/api/workspace/get-all-workspaces")
+    return response
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+import { NewWorkSpaceData } from "@/components/workspace/NewWorkspaceForm"
+
+export const createWorkspace = async (workspaceData: NewWorkSpaceData) => {
+  try {
+    const response = await API.post("/api/workspace/create-workspace", workspaceData)
     return response
   } catch (error) {
     return Promise.reject(error)
