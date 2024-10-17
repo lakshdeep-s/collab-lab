@@ -21,7 +21,10 @@ const useWorkspaces = () => {
       const latestWorkspace = sortedWorkspaces[0]    
       setSelectedWorkspace(latestWorkspace.name)
 
-      queryClient.setQueryData(['active-workspace'], latestWorkspace)
+      queryClient.setQueryData(
+        ["active-workspace"],
+        latestWorkspace,
+      );
     }
   }, [data, queryClient])
 

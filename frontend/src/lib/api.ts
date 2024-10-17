@@ -1,6 +1,5 @@
 import { API } from "@/config/apiClient"
-import { WorkspaceData } from "@/types"
-import { AxiosResponse } from "axios"
+import { queryClient } from "@/config/reactQuery"
 
 export const getAuthenticatedUser = async () => {
   try {
@@ -45,6 +44,7 @@ export const register = async (registerData: RegisterData) => {
 export const logout = async () => {
   try {
     const response = await API.post("/auth/logout")
+    queryClient.clear()
     return response
   } catch (error) {
     return Promise.reject(error)

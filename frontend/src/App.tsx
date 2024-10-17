@@ -13,6 +13,7 @@ import Settings from "./pages/Settings";
 import Team from "./pages/Team";
 import AccountSettings from "./pages/AccountSettings";
 import CreateWorkspacePage from "./pages/CreateWorkspacePage";
+import Workspace from "./pages/Workspace";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
           {
             index: true,
             path: "/",
-            element: <div>Home</div>
+            element: <Workspace />
           },
           {
             path: "/tasks",

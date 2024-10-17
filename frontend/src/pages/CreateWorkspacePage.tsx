@@ -10,7 +10,7 @@ const CreateWorkspacePage = () => {
         <p className="text-xsm text-muted-foreground">{c.header.subHeading}</p>
       </div>
 
-      <div className="px-6 py-6 rounded-md flex flex-col text-xsm gap-4 w-[600px] max-w-[600px] bg-white shadow-md">
+      <div className="px-6 py-6 rounded-md flex flex-col text-xsm gap-4 bg-white shadow-md">
         <NewWorkspaceSection/>
       </div>
     </div>

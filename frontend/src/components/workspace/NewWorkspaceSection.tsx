@@ -1,9 +1,9 @@
-import React from 'react'
+
 import NewWorkspaceForm from './NewWorkspaceForm'
 
 const NewWorkspaceSection = () => {
   return (
-    <div>
+    <div className='max-w-[500px]'>
         <NewWorkspaceForm /> 
     </div>
   )
