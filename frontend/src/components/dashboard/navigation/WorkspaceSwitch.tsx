@@ -12,7 +12,7 @@ const WorkspaceSwitch = () => {
       onWorkspaceChange={handleWorkspaceChange}
     />
   ) : (
-    <Button>New Workspace</Button>
+    <Button className="w-[200px]">New Workspace</Button>
   )
 }
 
