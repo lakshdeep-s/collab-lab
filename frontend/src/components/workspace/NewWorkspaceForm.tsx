@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { WorkspaceSchema } from "@/schemas/WorkspaceSchema";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { flushSync } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +28,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
 
-type NewWorkSpaceData = {
+import { createWorkspace } from "@/lib/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { replace, useNavigate } from "react-router-dom";
+
+export type NewWorkSpaceData = {
     name: string;
     description: string
 }
@@ -35,6 +40,25 @@ type NewWorkSpaceData = {
 export default function NewWorkspaceForm() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [workspaceData, setWorkspaceData] = useState<NewWorkSpaceData | null>(null)
+    const navigate = useNavigate()
+    const queryClient = useQueryClient()
+
+    const {
+        mutate: createWorkspaceMutation,
+        isPending,
+    } = useMutation({
+        mutationFn: createWorkspace,
+        onSuccess: (newWorkspace) => {
+            //@ts-ignore
+            queryClient.setQueryData(["active-workspace"], newWorkspace.workspace);
+            queryClient.invalidateQueries({ queryKey: ["workspaces"] });
+
+            navigate("/", {replace: true});
+        },
+        onError: (error) => {
+            console.error("Error creating workspace:", error);
+        }
+    });
 
     const form = useForm<z.infer<typeof WorkspaceSchema>>({
         resolver: zodResolver(WorkspaceSchema),
@@ -45,12 +69,12 @@ export default function NewWorkspaceForm() {
     });
 
     const handleDialogContinue = () => {
-        console.log(workspaceData)
+        createWorkspaceMutation(workspaceData!);
     };
 
     function onSubmit(values: z.infer<typeof WorkspaceSchema>) {
         setIsDialogOpen(true);
-        setWorkspaceData(values as NewWorkSpaceData)
+        setWorkspaceData(values as NewWorkSpaceData);
     }
 
     return (
@@ -84,7 +108,11 @@ export default function NewWorkspaceForm() {
                 />
                 <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <AlertDialogTrigger asChild>
-                        <Button type="button" onClick={form.handleSubmit(onSubmit)}>
+                        <Button
+                            type="button"
+                            onClick={form.handleSubmit(onSubmit)}
+                            disabled={isPending}
+                        >
                             Create Workspace
                         </Button>
                     </AlertDialogTrigger>
