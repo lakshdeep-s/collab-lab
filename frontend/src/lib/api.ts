@@ -1,4 +1,6 @@
 import { API } from "@/config/apiClient"
+import { WorkspaceData } from "@/types"
+import { AxiosResponse } from "axios"
 
 export const getAuthenticatedUser = async () => {
   try {
@@ -43,6 +45,15 @@ export const register = async (registerData: RegisterData) => {
 export const logout = async () => {
   try {
     const response = await API.post("/auth/logout")
+    return response
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+export const getAllWorkspaces = async () => {
+  try {
+    const response = await API.get("/api/workspace/get-all-workspaces")
     return response
   } catch (error) {
     return Promise.reject(error)

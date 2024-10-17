@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { NavigationLink } from "@/constants/NavigationContent";
-import { NavLink, NavLinkProps } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const NavLinkComponent: FC<NavigationLink> = ({ title, href, icon }) => {
@@ -11,12 +11,12 @@ const NavLinkComponent: FC<NavigationLink> = ({ title, href, icon }) => {
         end
         className={({ isActive }) =>
           cn(
-            "flex gap-2 items-center hover:bg-slate-100 text-slate-400 rounded-md transition-all py-1 px-2 w-[150px] max-md:w-full tracking-tight",
-            isActive ? "bg-brand text-white font-semibold hover:bg-orange-500" : ""
+            "flex w-full gap-2 items-center hover:bg-slate-100 text-slate-500 rounded-sm transition-all py-1 px-2 max-md:w-full",
+            isActive ? "font-medium bg-slate-300 hover:bg-slate-200 text-foreground" : ""
           )
         }
       >
-        {icon} {title}
+        {icon} <span className="text-xsm">{title}</span>
       </NavLink>
     </li>
   );

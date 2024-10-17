@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        primary: "Open Sans",
+        primary: "Inter",
       },
 	  fontSize: {
 		'xsm': '0.875rem'

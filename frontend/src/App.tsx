@@ -12,6 +12,7 @@ import Projects from "./pages/Projects";
 import Settings from "./pages/Settings";
 import Team from "./pages/Team";
 import AccountSettings from "./pages/AccountSettings";
+import CreateWorkspacePage from "./pages/CreateWorkspacePage";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
           {
             path: "/account",
             element: <AccountSettings />
+          },
+          {
+            path: '/new-workspace',
+            element: <CreateWorkspacePage />
           }
         ]
       }

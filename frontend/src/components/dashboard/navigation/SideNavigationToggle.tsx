@@ -8,7 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import VisuallyHidden from "../features/VisuallyHidden"
+import VisuallyHidden from "../../features/VisuallyHidden"
 
 const SideNavigationToggle = () => {
   return (

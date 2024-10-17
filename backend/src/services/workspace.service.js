@@ -47,8 +47,8 @@ export const updateWorkspaceService = async (workspaceId, userId, workspaceData)
 };
 
 export const getAllWorkspacesService = async (userId) => {
-    const workspaces = await WorkspaceModel.find({ members: userId });
-    return workspaces;
+    const workspaces = await WorkspaceModel.find({ members: userId }).lean();
+    return {workspaces};
 };
 
 export const getWorkspaceService = async (workspaceId, userId) => {

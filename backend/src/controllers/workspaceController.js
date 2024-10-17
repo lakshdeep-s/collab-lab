@@ -55,9 +55,7 @@ export const getAllWorkspacesController = async (req, res) => {
 
     const workspaces = await getAllWorkspacesService(userId)
 
-    return res.status(OK).json({
-        workspaces: workspaces
-    })
+    return res.status(OK).json(workspaces)
 }
 
 export const getWorkspaceController = async (req, res) => {
