@@ -33,8 +33,13 @@ interface IUserDataSectionProps {
   user: UserData | undefined;
 }
 
+type NewUserData = {
+  username: string
+}
+
 const UserDataSection: FC<IUserDataSectionProps> = ({ user }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [userData, setUserData] = useState<NewUserData | null>(null);
 
   // Implement updation of data later
   
@@ -45,9 +50,13 @@ const UserDataSection: FC<IUserDataSectionProps> = ({ user }) => {
     },
   });
 
+  const handleDialogContinue = () => {
+    console.log(userData)
+};
+
   function onSubmit(values: z.infer<typeof AccountSchema>) {
-    console.log(values)
-    setIsDialogOpen(false);
+    setIsDialogOpen(true);
+    setUserData(values as NewUserData)
   }
 
   return (
@@ -68,7 +77,7 @@ const UserDataSection: FC<IUserDataSectionProps> = ({ user }) => {
         />
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
-            <Button type="button">Save Changes</Button>
+            <Button type="button" onClick={form.handleSubmit(onSubmit)}>Save Changes</Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -79,7 +88,7 @@ const UserDataSection: FC<IUserDataSectionProps> = ({ user }) => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={form.handleSubmit(onSubmit)}>
+              <AlertDialogAction onClick={handleDialogContinue}>
                 Save
               </AlertDialogAction>
             </AlertDialogFooter>
