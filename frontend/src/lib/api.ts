@@ -80,3 +80,21 @@ export const setActiveWorkspace = async (workspaceId: string) => {
     return Promise.reject(error)
   }
 }
+
+export const updateWorkspace = async (workspaceId: string, workspaceData: NewWorkSpaceData) => {
+  try {
+    const response = await API.put(`/api/workspace/update-workspace/${workspaceId}`, workspaceData)
+    return response
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+export const deleteWorkspace = async (workspaceId: string) => {
+  try {
+    const response = await API.delete(`/api/workspace/delete-workspace/${workspaceId}`)
+    return response
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}

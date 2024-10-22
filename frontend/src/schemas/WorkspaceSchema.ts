@@ -10,4 +10,5 @@ export const WorkspaceSchema = z.object({
     description: z.string().max(100, {
         message: "Description must be less than 100 characters long"
     }).optional(),
+    active: z.boolean().default(true)
 })

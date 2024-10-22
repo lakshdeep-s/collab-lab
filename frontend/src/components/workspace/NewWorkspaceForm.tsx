@@ -35,7 +35,8 @@ import useWorkspacesWithActive from "@/hooks/useWorkspaceWithActive";
 
 export type NewWorkSpaceData = {
     name: string;
-    description: string
+    description: string;
+    isActive?: boolean
 }
 
 export default function NewWorkspaceForm() {
