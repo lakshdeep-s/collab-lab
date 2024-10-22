@@ -42,7 +42,7 @@ const UserDataSection: FC<IUserDataSectionProps> = ({ user }) => {
   const [userData, setUserData] = useState<NewUserData | null>(null);
 
   // Implement updation of data later
-  
+
   const form = useForm<z.infer<typeof AccountSchema>>({
     resolver: zodResolver(AccountSchema),
     defaultValues: {
@@ -52,7 +52,7 @@ const UserDataSection: FC<IUserDataSectionProps> = ({ user }) => {
 
   const handleDialogContinue = () => {
     console.log(userData)
-};
+  };
 
   function onSubmit(values: z.infer<typeof AccountSchema>) {
     setIsDialogOpen(true);

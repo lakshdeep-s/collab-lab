@@ -4,6 +4,9 @@ import { WorkspaceSchema } from "@/schemas/WorkspaceSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button"
+import { useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { updateWorkspace } from "@/lib/api";
 import {
   Form,
   FormControl,
@@ -25,20 +28,29 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { WorkspaceData } from "@/types";
+import DeleteWorkspaceToggle from "./DeleteWorkspaceToggle";
+import { NewWorkSpaceData } from "./NewWorkspaceForm";
 
 interface IEditWorkspaceFormProps {
   workspace: WorkspaceData | undefined
 }
 
-type NewWorkspaceData = {
-  name: string;
-  description?: string;
-  active?: boolean;
-}
-
 const EditWorkspaceForm: FC<IEditWorkspaceFormProps> = ({ workspace }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [workspaceData, setWorkspaceData] = useState<NewWorkspaceData | null>(null);
+  const [workspaceData, setWorkspaceData] = useState<NewWorkSpaceData>({name: workspace?.name!, description: workspace?.description, isActive: workspace?.active});
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: updateWorkspaceMutation,
+    isPending
+  } = useMutation({
+    mutationFn: ({ workspaceId, workspaceData }: { workspaceId: string, workspaceData: NewWorkSpaceData }) =>
+      updateWorkspace(workspaceId, workspaceData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workspaces"] });
+      window.location.reload();
+    },
+  })
 
   const form = useForm<z.infer<typeof WorkspaceSchema>>({
     resolver: zodResolver(WorkspaceSchema),
@@ -50,12 +62,12 @@ const EditWorkspaceForm: FC<IEditWorkspaceFormProps> = ({ workspace }) => {
   });
 
   const handleDialogContinue = () => {
-    console.log(workspaceData)
+    updateWorkspaceMutation({ workspaceId: workspace?._id!, workspaceData })
   };
 
   function onSubmit(values: z.infer<typeof WorkspaceSchema>) {
     setIsDialogOpen(true);
-    setWorkspaceData(values as NewWorkspaceData)
+    setWorkspaceData(values as NewWorkSpaceData)
   }
 
   return (
@@ -87,25 +99,29 @@ const EditWorkspaceForm: FC<IEditWorkspaceFormProps> = ({ workspace }) => {
             </FormItem>
           )}
         />
-        <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <AlertDialogTrigger asChild>
-            <Button type="button" className="text-xsm text-white" onClick={form.handleSubmit(onSubmit)}>Save Changes</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action will update your workspace settings. Do you want to continue?
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDialogContinue}>
-                Save
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+
+        <div className="flex justify-between items-center">
+          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <AlertDialogTrigger asChild>
+              <Button disabled={isPending} type="button" className="text-xsm text-white" onClick={form.handleSubmit(onSubmit)}>Save Changes</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action will update your workspace settings. Do you want to continue?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDialogContinue} disabled={isPending}>
+                  Save
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+          <DeleteWorkspaceToggle />
+        </div>
       </form>
     </Form>
   )
