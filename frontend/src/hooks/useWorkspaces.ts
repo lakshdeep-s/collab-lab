@@ -1,40 +1,46 @@
 import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getAllWorkspaces } from "@/lib/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getAllWorkspaces, setActiveWorkspace } from "@/lib/api";
 import { WorkspaceData } from "@/types";
 
 const useWorkspaces = () => {
   const queryClient = useQueryClient();
+
   const [selectedWorkspace, setSelectedWorkspace] = useState<string | undefined>(undefined);
 
-  const {data} = useQuery({
-    queryKey: ['workspaces'],
+  const { data } = useQuery({
+    queryKey: ["workspaces"],
     queryFn: getAllWorkspaces,
-    staleTime: Infinity
-  }) as {data: {workspaces: WorkspaceData[]}};
+    staleTime: Infinity,
+  }) as { data: { workspaces: WorkspaceData[] } };
+  
+  const activeWorkspace = data?.workspaces.find(workspace => workspace.active) || null;
+
+  const {
+    mutate: activateWorkspace,
+  } = useMutation({
+    mutationFn: setActiveWorkspace,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workspaces"] });
+    },
+    onError: (error) => {
+      console.error("Error activating workspace:", error);
+    },
+  });
 
   useEffect(() => {
-    if (data?.workspaces?.length) {
-
-      const latestWorkspace = data.workspaces[0]    
-      setSelectedWorkspace(latestWorkspace.name)
-
-      queryClient.setQueryData(
-        ["active-workspace"],
-        latestWorkspace,
-      );
+    if (activeWorkspace) {
+      setSelectedWorkspace(activeWorkspace.name);
     }
-  }, [data, queryClient])
+  }, [activeWorkspace]);
 
   const handleWorkspaceChange = (value: string) => {
     setSelectedWorkspace(value);
-    
-    const selectedWorkspaceData = data?.workspaces.find(
-      (workspace) => workspace.name === value
-    );
 
-    if (selectedWorkspaceData) {
-      queryClient.setQueryData(["active-workspace"], selectedWorkspaceData);
+    const workspace = data?.workspaces.find(ws => ws.name === value);
+
+    if (workspace) {
+      activateWorkspace(workspace._id);
     }
   };
 
@@ -43,6 +49,6 @@ const useWorkspaces = () => {
     selectedWorkspace,
     handleWorkspaceChange,
   };
-}
+};
 
-export default useWorkspaces
+export default useWorkspaces;

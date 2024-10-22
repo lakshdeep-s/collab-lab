@@ -1,8 +1,8 @@
 import WorkspaceOverview from "@/components/workspace/WorkspaceOverview"
-import useGetCurrentWorkspace from "@/hooks/useGetCurrentWorkspace"
+import useWorkspacesWithActive from "@/hooks/useWorkspaceWithActive"
 
 const Workspace = () => {
-    const currentWorkspace = useGetCurrentWorkspace()
+    const { currentWorkspace } = useWorkspacesWithActive()
     
     if (!currentWorkspace) {
         return <div>No Workspaces, Create some first</div>

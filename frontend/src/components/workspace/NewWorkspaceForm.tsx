@@ -1,9 +1,9 @@
+import React from 'react';
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { WorkspaceSchema } from "@/schemas/WorkspaceSchema";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { flushSync } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,7 +30,8 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { createWorkspace } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { replace, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useWorkspacesWithActive from "@/hooks/useWorkspaceWithActive";
 
 export type NewWorkSpaceData = {
     name: string;
@@ -39,9 +40,10 @@ export type NewWorkSpaceData = {
 
 export default function NewWorkspaceForm() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [workspaceData, setWorkspaceData] = useState<NewWorkSpaceData | null>(null)
-    const navigate = useNavigate()
-    const queryClient = useQueryClient()
+    const [workspaceData, setWorkspaceData] = useState<NewWorkSpaceData | null>(null);
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const { handleWorkspaceChange } = useWorkspacesWithActive();
 
     const {
         mutate: createWorkspaceMutation,
@@ -49,11 +51,13 @@ export default function NewWorkspaceForm() {
     } = useMutation({
         mutationFn: createWorkspace,
         onSuccess: (newWorkspace) => {
-            //@ts-ignore
-            queryClient.setQueryData(["active-workspace"], newWorkspace.workspace);
+            
             queryClient.invalidateQueries({ queryKey: ["workspaces"] });
-
-            navigate("/", {replace: true});
+            
+            //@ts-ignore
+            handleWorkspaceChange(newWorkspace?.name)
+            
+            navigate("/");
         },
         onError: (error) => {
             console.error("Error creating workspace:", error);
@@ -70,6 +74,7 @@ export default function NewWorkspaceForm() {
 
     const handleDialogContinue = () => {
         createWorkspaceMutation(workspaceData!);
+        setIsDialogOpen(false);
     };
 
     function onSubmit(values: z.infer<typeof WorkspaceSchema>) {
@@ -113,20 +118,20 @@ export default function NewWorkspaceForm() {
                             onClick={form.handleSubmit(onSubmit)}
                             disabled={isPending}
                         >
-                            Create Workspace
+                            {isPending ? 'Creating...' : 'Create Workspace'}
                         </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                             <AlertDialogDescription>
-                                This action will create a new workspace. Do you want to continue?
+                                This action will create a new workspace and set it as active. Do you want to continue?
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={handleDialogContinue}>
-                                Continue
+                            <AlertDialogAction onClick={handleDialogContinue} disabled={isPending}>
+                                {isPending ? 'Creating...' : 'Continue'}
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>

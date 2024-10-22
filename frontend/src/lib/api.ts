@@ -71,3 +71,12 @@ export const createWorkspace = async (workspaceData: NewWorkSpaceData) => {
     return Promise.reject(error)
   }
 }
+
+export const setActiveWorkspace = async (workspaceId: string) => {
+  try {
+    const response = await API.post(`/api/workspace/set-active-workspace/${workspaceId}`)
+    return response
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}

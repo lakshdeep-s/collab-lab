@@ -12,7 +12,8 @@ export type WorkspaceData = {
   createdBy: UserData['userId']
   updatedAt: Date,
   createdAt: Date,
-  admins: UserData['userId'][]
-  members: UserData['userId'][]
+  admins: UserData['userId'][],
+  members: UserData['userId'][],
+  active: boolean
 }
 

@@ -1,5 +1,4 @@
-import { createBrowserRouter, RouterProvider, useNavigate, Outlet } from "react-router-dom"
-import { useEffect } from 'react'
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
 // Pages
 import LoginPage from "./pages/LoginPage";
@@ -14,12 +13,14 @@ import Team from "./pages/Team";
 import AccountSettings from "./pages/AccountSettings";
 import CreateWorkspacePage from "./pages/CreateWorkspacePage";
 import Workspace from "./pages/Workspace";
+import DevelopmentProvider from "./providers/DevelopmentProvider";
 
 const router = createBrowserRouter([
   {
 
     path: "/",
     element: <AuthProvider />,
+    // element: <DevelopmentProvider />,
     children: [
       {
         path: "/",

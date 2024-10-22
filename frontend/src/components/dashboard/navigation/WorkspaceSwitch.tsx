@@ -1,9 +1,9 @@
-import useWorkspaces from "@/hooks/useWorkspaces";
 import WorkspaceSelect from "./WorkspaceSelect";
 import { Button } from "@/components/ui/button";
+import useWorkspacesWithActive from "@/hooks/useWorkspaceWithActive";
 
 const WorkspaceSwitch = () => {
-  const { data, selectedWorkspace, handleWorkspaceChange } = useWorkspaces()
+  const { data, selectedWorkspace, handleWorkspaceChange } = useWorkspacesWithActive()
 
   return data?.workspaces.length ? (
     <WorkspaceSelect
