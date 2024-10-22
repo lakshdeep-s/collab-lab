@@ -6,7 +6,10 @@ const WorkspaceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    description: String,
+    description: {
+      type: String,
+      default: ''
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -24,6 +27,10 @@ const WorkspaceSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    active: {
+      type: Boolean,
+      default: false,
+    }
   },
   { timestamps: true }
 )
