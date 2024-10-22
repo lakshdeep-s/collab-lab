@@ -2,8 +2,10 @@ import { useEffect, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getAllWorkspaces, setActiveWorkspace } from "@/lib/api"
 import { WorkspaceData } from "@/types"
+import { useNavigate } from "react-router-dom"
 
 const useWorkspacesWithActive = () => {
+  const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [selectedWorkspace, setSelectedWorkspace] = useState<
     string | undefined
@@ -39,13 +41,15 @@ const useWorkspacesWithActive = () => {
 
   const handleWorkspaceChange = (value: string) => {
     setSelectedWorkspace(value)
+    
 
     const workspace = data?.workspaces.find(ws => ws.name === value);
 
     if (workspace) {
-      console.log("Activating workspace:", workspace.name)
-      console.log("Workspace ID:", workspace._id)
       activateWorkspace(workspace._id)
+      navigate("/", {
+        replace: true,
+      })
     }
   }
 

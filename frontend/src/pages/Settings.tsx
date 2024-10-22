@@ -1,7 +1,9 @@
 import { WorkspaceSettingsContent } from "@/constants/WorkspaceContent"
+import useUserRole from "@/hooks/useUserRole"
 import useWorkspacesWithActive from "@/hooks/useWorkspaceWithActive"
 import { UserData } from "@/types"
 import { useQueryClient } from "@tanstack/react-query"
+import EditWorkspaceForm from "@/components/workspace/EditWorkspaceForm"
 const c = WorkspaceSettingsContent
 
 const Settings = () => {
@@ -9,6 +11,7 @@ const Settings = () => {
   const queryClient = useQueryClient()
 
   const user = queryClient.getQueryData<UserData>(["user"])
+  const isAdmin = useUserRole()
 
   return (
     <div className="h-full overflow-scroll px-4 font-primary flex flex-col gap-8 no-scrollbar">
@@ -25,6 +28,10 @@ const Settings = () => {
             Created by <span className="text-brand">{user?.username}</span>
           </span>
         </div>
+
+        {isAdmin && 
+          <EditWorkspaceForm workspace={currentWorkspace ? currentWorkspace : undefined}/>
+        }
       </div>
     </div>
   )
