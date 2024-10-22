@@ -43,6 +43,8 @@ const useWorkspacesWithActive = () => {
     const workspace = data?.workspaces.find(ws => ws.name === value);
 
     if (workspace) {
+      console.log("Activating workspace:", workspace.name)
+      console.log("Workspace ID:", workspace._id)
       activateWorkspace(workspace._id)
     }
   }

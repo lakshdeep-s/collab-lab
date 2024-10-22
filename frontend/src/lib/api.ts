@@ -74,7 +74,7 @@ export const createWorkspace = async (workspaceData: NewWorkSpaceData) => {
 
 export const setActiveWorkspace = async (workspaceId: string) => {
   try {
-    const response = await API.post(`/api/workspace/set-active-workspace/${workspaceId}`)
+    const response = await API.put(`/api/workspace/set-active/${workspaceId}`)
     return response
   } catch (error) {
     return Promise.reject(error)
