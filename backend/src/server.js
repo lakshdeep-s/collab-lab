@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser"
 import workspaceRouter from "./routes/workspaceRoutes.js"
 import projectRouter from "./routes/projectRoutes.js"
 import taskRouter from "./routes/taskRoutes.js"
+import invitationRouter from "./routes/invitationRoutes.js"
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -36,6 +37,7 @@ app.use("/user", authenticate, userRouter)
 app.use("/api", authenticate, workspaceRouter)
 app.use("/api", authenticate, projectRouter)
 app.use("/api", authenticate, taskRouter)
+app.use("/api", authenticate, invitationRouter)
 
 // Global error handler
 app.use(errorHandler)
