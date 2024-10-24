@@ -16,22 +16,31 @@ const Settings = () => {
   return (
     <div className="h-full overflow-scroll px-4 font-primary flex flex-col gap-8 no-scrollbar">
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">{c.header.heading}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{currentWorkspace?.name} Workspace Settings</h1>
         <p className="text-xsm text-muted-foreground">{c.header.subHeading}</p>
       </div>
 
       {/* Workspace Data Section */}
       <div className="px-6 py-6 rounded-md flex flex-col text-xsm gap-4 w-[600px] max-w-[600px] bg-white shadow-md">
-        <div className="flex flex-col">
-          <h2 className="text-[1rem] font-semibold tracking-tight">{currentWorkspace?.name} Workspace</h2>
-          <span className="text-xsm text-muted-foreground">
-            Created by <span className="text-brand">{user?.username}</span>
-          </span>
-        </div>
 
+        {/* Admin */}
         {isAdmin && 
           <EditWorkspaceForm workspace={currentWorkspace ? currentWorkspace : undefined}/>
+        }         
+
+        {/* Non Admin */}
+        {
+          !isAdmin && 
+          <div>
+
+          </div>
         }
+      </div>
+
+      <div className="px-6 py-6 rounded-md flex flex-col text-xsm gap-4 w-[600px] max-w-[600px] bg-white shadow-md">
+        Team members appear here
+        <span className="font-bold tracking-tighter">Team Admins + Members</span>
+        for current workspace
       </div>
     </div>
   )
