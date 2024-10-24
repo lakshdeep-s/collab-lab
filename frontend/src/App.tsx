@@ -6,13 +6,13 @@ import SignupPage from "./pages/SignupPage";
 import AuthProvider from "./providers/AuthProvider";
 import DashboardLayout from "./layouts/DashboardLayout";
 import NotFound from "./pages/NotFound";
-import Tasks from "./pages/Tasks";
-import Projects from "./pages/Projects";
-import Settings from "./pages/Settings";
-import Team from "./pages/Team";
-import AccountSettings from "./pages/AccountSettings";
+import Tasks from "./pages/TasksPage";
+import Projects from "./pages/ProjectsPage";
+import Settings from "./pages/WorkspaceSettingsPage";
+import Team from "./pages/TeamsPage";
+import AccountSettings from "./pages/AccountSettingsPage";
 import CreateWorkspacePage from "./pages/CreateWorkspacePage";
-import Workspace from "./pages/Workspace";
+import Workspace from "./pages/WorkspacePage";
 import DevelopmentProvider from "./providers/DevelopmentProvider";
 
 const router = createBrowserRouter([
