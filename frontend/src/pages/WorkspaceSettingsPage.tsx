@@ -8,8 +8,6 @@ const c = WorkspaceSettingsContent
 const Settings = () => {
   const {currentWorkspace} = useWorkspacesWithActive()
   const isAdmin = useUserRole()
-  
-  
 
   return (
     <div className="h-full overflow-scroll px-4 font-primary flex flex-col gap-8 no-scrollbar">
@@ -34,7 +32,7 @@ const Settings = () => {
       </div>
 
       <div className="px-6 py-6 rounded-md flex flex-col text-xsm gap-4 bg-white shadow-md">
-        <TeamMemberList isAdminAccess={isAdmin}/>
+        <TeamMemberList isAdminAccess={isAdmin} workspaceId={currentWorkspace?._id}/>
       </div>
     </div>
   )

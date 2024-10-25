@@ -1,5 +1,8 @@
+import { NewWorkSpaceData } from "@/components/workspace/NewWorkspaceForm"
+import { MemberResponse} from "@/types"
 import { API } from "@/config/apiClient"
 import { queryClient } from "@/config/reactQuery"
+import { AxiosResponse } from "axios"
 
 export const getAuthenticatedUser = async () => {
   try {
@@ -61,8 +64,6 @@ export const getAllWorkspaces = async () => {
   }
 }
 
-import { NewWorkSpaceData } from "@/components/workspace/NewWorkspaceForm"
-import { TeamMember } from "@/types"
 
 export const createWorkspace = async (workspaceData: NewWorkSpaceData) => {
   try {
@@ -100,9 +101,11 @@ export const deleteWorkspace = async (workspaceId: string) => {
   }
 }
 
-export const getAllMembers = async (workspaceId: string): Promise<TeamMember[]> => {
+export const getAllMembers = async (workspaceId: string): Promise<MemberResponse> => {
   try {
-    const response = await API.get<TeamMember[]>(`/api/workspace/get-all-members/${workspaceId}`);
+    const response: AxiosResponse<MemberResponse> = await API.get<MemberResponse>(
+      `/api/workspace/get-all-members/${workspaceId}`
+    );
     return response.data; 
   } catch (error) {
     return Promise.reject(error);

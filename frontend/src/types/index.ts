@@ -23,6 +23,9 @@ export interface TeamMember extends UserData{
   pendingTasks?: number
   totalTasks?: number
   inviteStatus?: 'pending' | 'accepted' | 'rejected'
-  role?: 'admin' | 'member'
 }
 
+export type MemberResponse = {
+  admins: TeamMember[]
+  members: TeamMember[]
+}

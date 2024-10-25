@@ -92,6 +92,8 @@ export const getAllMembersController = async (req, res) => {
     appAssert(workspaceId, "Workspace ID is required", BAD_REQUEST);
 
     const result = await getAllMembersService(workspaceId, userId);
-    console.log(result)
-    return res.status(OK).json(result)
+    
+    return res.status(OK).json({
+        data: result
+    })
 }

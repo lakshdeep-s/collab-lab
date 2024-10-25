@@ -1,26 +1,26 @@
 import { FC } from "react"
-import { TeamMember, UserData } from "@/types"
 import TeamMemberCard from "./TeamMemberCard"
 import { Button } from "../ui/button"
 import { RiAddCircleFill } from "react-icons/ri";
+import useGetMembers from "@/hooks/useGetMembers";
 
 interface TeamMemberListProps {
-  listItems?: TeamMember[]
-  admins?: UserData[]
-  members?: UserData[]
-  isAdminAccess?: boolean
+  isAdminAccess?: boolean,
+  workspaceId?: string
 }
 
-const TeamMemberList: FC<TeamMemberListProps> = ({ admins=[], members=[], isAdminAccess = false }) => {
-
+const TeamMemberList: FC<TeamMemberListProps> = ({ isAdminAccess = false, workspaceId}) => {
+  const {members} = useGetMembers(workspaceId ? workspaceId : "")
+  const admin = members?.admins || []
+  const member = members?.members || []
   return (
     <div className="space-y-8">
       <div>
         <h2 className="text-lg font-semibold tracking-tighter mb-4">Admins</h2>
         <div className="space-y-4">
-          {admins.map((member) => (
+          {admin.map((member, index) => (
             <TeamMemberCard
-              key={member.userId}
+              key={index}
               member={member}
               type="admin"
               isAdminAccess={isAdminAccess}
@@ -34,10 +34,10 @@ const TeamMemberList: FC<TeamMemberListProps> = ({ admins=[], members=[], isAdmi
           <span><Button className="flex items-center gap-3 text-muted-foreground" variant={'secondary'}><RiAddCircleFill /> Add Member</Button></span>
         }</h2>
         <div className="space-y-4">
-          {members.map((member) => (
+          {member.map((mem, index) => (
             <TeamMemberCard
-              key={member.userId}
-              member={member}
+              key={index}
+              member={mem}
               type="member"
               isAdminAccess={isAdminAccess}
             />

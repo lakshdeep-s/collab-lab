@@ -1,4 +1,4 @@
-import { WorkspaceData } from "@/types";
+import { UserData, WorkspaceData } from "@/types";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
