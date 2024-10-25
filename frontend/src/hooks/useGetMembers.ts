@@ -9,8 +9,6 @@ const useGetMembers = (workspaceId: string) => {
     enabled: !!workspaceId,
     staleTime: Infinity,
   })
-
-  console.log(members)
   return {
     members,
     options,
