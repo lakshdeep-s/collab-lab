@@ -119,7 +119,17 @@ export const getAllMembersService = async (workspaceId, userId) => {
   const isMember = workspace.members.includes(userId)
   appAssert(isMember, "User is not a member of this workspace", FORBIDDEN)
 
-  const members = await UserModel.find({ _id: { $in: workspace.members } })
+  const admins = await Promise.all(workspace.admins.map(async (adminId) => {
+    return await UserModel.findById(adminId)
+  }))
 
-  return members
+  const nonAdminMembers = workspace.members.filter((memberId) => {
+    return !workspace.admins.includes(memberId)
+  })
+
+  const members = await Promise.all(nonAdminMembers.map(async (memberId) => {
+    return await UserModel.findById(memberId)
+  }))
+
+  return {admins, members}
 }
