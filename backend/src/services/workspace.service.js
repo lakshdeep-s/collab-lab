@@ -2,6 +2,7 @@ import { UserModel } from "../model/user.model.js"
 import { WorkspaceModel } from "../model/workspace.model.js"
 import appAssert from "../utils/appAssert.js"
 import { FORBIDDEN, NOT_FOUND } from "../constants/HTTPCodes.js"
+import omitPasswordOnResponse from "../utils/omitPasswordOnResponse.js"
 
 export const createWorkspaceService = async (userId, name, description) => {
   const user = await UserModel.findById(userId)
@@ -120,7 +121,8 @@ export const getAllMembersService = async (workspaceId, userId) => {
   appAssert(isMember, "User is not a member of this workspace", FORBIDDEN)
 
   const admins = await Promise.all(workspace.admins.map(async (adminId) => {
-    return await UserModel.findById(adminId)
+    const admin = await UserModel.findById(adminId).lean()
+    return omitPasswordOnResponse(admin)
   }))
 
   const nonAdminMembers = workspace.members.filter((memberId) => {
@@ -128,7 +130,8 @@ export const getAllMembersService = async (workspaceId, userId) => {
   })
 
   const members = await Promise.all(nonAdminMembers.map(async (memberId) => {
-    return await UserModel.findById(memberId)
+    const member = await UserModel.findById(memberId).lean()
+    return omitPasswordOnResponse(member)
   }))
 
   return {admins, members}
