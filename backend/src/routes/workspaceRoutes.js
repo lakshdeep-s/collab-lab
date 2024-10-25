@@ -1,6 +1,6 @@
 import express from "express"
 import { errorCatcher } from "../utils/errorCatcher.js"
-import { createWorkspaceController, deleteWorkspaceController, getAllWorkspacesController, getWorkspaceController, setActiveWorkspaceController, updateWorkspaceController } from "../controllers/workspaceController.js"
+import { createWorkspaceController, deleteWorkspaceController, getAllMembersController, getAllWorkspacesController, getWorkspaceController, setActiveWorkspaceController, updateWorkspaceController } from "../controllers/workspaceController.js"
 
 const workspaceRouter = express.Router()
 
@@ -21,5 +21,8 @@ workspaceRouter.get("/workspace/get-all-workspaces", errorCatcher(getAllWorkspac
 
 // Set a workspace as active (requires user to be a member of the workspace)
 workspaceRouter.put("/workspace/set-active/:workspaceId", errorCatcher(setActiveWorkspaceController))
+
+// Get all the members of a give workspace
+workspaceRouter.get("/workspace/get-all-members/:workspaceId", errorCatcher(getAllMembersController))
 
 export default workspaceRouter

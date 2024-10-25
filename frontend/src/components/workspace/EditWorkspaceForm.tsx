@@ -120,6 +120,7 @@ const EditWorkspaceForm: FC<IEditWorkspaceFormProps> = ({ workspace }) => {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+          
           <DeleteWorkspaceToggle />
         </div>
       </form>

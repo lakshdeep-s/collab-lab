@@ -62,6 +62,7 @@ export const getAllWorkspaces = async () => {
 }
 
 import { NewWorkSpaceData } from "@/components/workspace/NewWorkspaceForm"
+import { TeamMember } from "@/types"
 
 export const createWorkspace = async (workspaceData: NewWorkSpaceData) => {
   try {
@@ -98,3 +99,12 @@ export const deleteWorkspace = async (workspaceId: string) => {
     return Promise.reject(error)
   }
 }
+
+export const getAllMembers = async (workspaceId: string): Promise<TeamMember[]> => {
+  try {
+    const response = await API.get<TeamMember[]>(`/api/workspace/get-all-members/${workspaceId}`);
+    return response.data; 
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

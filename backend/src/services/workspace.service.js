@@ -110,3 +110,16 @@ export const setActiveWorkspaceService = async (workspaceId, userId) => {
 
   return workspace
 }
+
+
+export const getAllMembersService = async (workspaceId, userId) => {
+  const workspace = await WorkspaceModel.findById(workspaceId)
+  appAssert(workspace, "Workspace not found", NOT_FOUND)
+
+  const isMember = workspace.members.includes(userId)
+  appAssert(isMember, "User is not a member of this workspace", FORBIDDEN)
+
+  const members = await UserModel.find({ _id: { $in: workspace.members } })
+
+  return members
+}

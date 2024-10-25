@@ -17,3 +17,12 @@ export type WorkspaceData = {
   active: boolean
 }
 
+export interface TeamMember extends UserData{
+  overdueTasks?: number
+  completedTasks?: number
+  pendingTasks?: number
+  totalTasks?: number
+  inviteStatus?: 'pending' | 'accepted' | 'rejected'
+  role?: 'admin' | 'member'
+}
+
