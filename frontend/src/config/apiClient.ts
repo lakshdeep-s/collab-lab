@@ -8,7 +8,7 @@ const options = {
 }
 
 export const API = axios.create(options)
-const AppErrorCodes = ['InvalidAccessToken', 'AccessTokenNotFound', 'AccessTokenExpired']
+const AppErrorCodes = ['InvalidAccessToken', 'AccessTokenNotFound', 'AccessTokenExpired', 'RefreshTokenNotFound', 'InvalidRefreshToken']
 
 const TokenRefreshClient = axios.create(options);
 TokenRefreshClient.interceptors.response.use((response) => response.data);
