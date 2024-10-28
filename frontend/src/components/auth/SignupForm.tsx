@@ -2,6 +2,9 @@ import { SignupFormSchema } from "@/schemas/AuthSchemas"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
+import { RiAlertLine } from "react-icons/ri";
+import { RiLoader4Line } from "react-icons/ri";
 
 // Form Components Import
 import { Button } from "@/components/ui/button"
@@ -14,9 +17,22 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useNavigate } from "react-router-dom"
+import { register } from "@/lib/api"
+import { Alert, AlertDescription } from "../ui/alert"
 
 const SignupForm = () => {
-
+    const navigate = useNavigate()
+    const {
+        mutate, error, isError, isPending
+    } = useMutation({
+        mutationFn: register,
+        onSuccess: () => {
+            navigate("/", {
+                replace: true,
+            })
+        }
+    })
     const form = useForm<z.infer<typeof SignupFormSchema>>({
         resolver: zodResolver(SignupFormSchema),
         defaultValues: {
@@ -27,7 +43,7 @@ const SignupForm = () => {
     })
 
     function onSubmit(values: z.infer<typeof SignupFormSchema>) {
-        console.log(values)
+        mutate(values)
     }
 
     return (
@@ -42,7 +58,7 @@ const SignupForm = () => {
                                 Username
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder="Acme" {...field} className="placeholder:text-xsm"/>
+                                <Input placeholder="Acme" {...field} className="placeholder:text-xsm" />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -57,7 +73,7 @@ const SignupForm = () => {
                                 Email
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder="acme@gmail.com" {...field} className="placeholder:text-xsm"/>
+                                <Input placeholder="acme@gmail.com" {...field} className="placeholder:text-xsm" />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -72,13 +88,25 @@ const SignupForm = () => {
                                 Password
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder="Enter password" {...field} type="password" className="placeholder:text-xsm"/>
+                                <Input placeholder="Enter password" {...field} type="password" className="placeholder:text-xsm" />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className="w-full bg-brand hover:bg-orange-500 font-semibold">Sign Up</Button>
+                {
+                    isError && (
+                        <Alert variant="destructive">
+                            <RiAlertLine size={20} />
+                            <AlertDescription>{error.message}</AlertDescription>
+                        </Alert>
+                    )
+                }
+                <Button type="submit" className="w-full bg-brand hover:bg-orange-500 font-semibold" disabled={isPending}>
+                    {
+                        isPending ? <RiLoader4Line size={25} className="animate-spin" /> : "Login"
+                    }
+                </Button>
             </form>
         </Form>
     )

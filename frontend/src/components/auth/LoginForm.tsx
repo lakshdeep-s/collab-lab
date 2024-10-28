@@ -87,7 +87,7 @@ const LoginForm = () => {
                         </Alert>
                     )
                 }
-                <Button type="submit" className="w-full font-semibold bg-brand hover:bg-orange-500">
+                <Button type="submit" className="w-full font-semibold bg-brand hover:bg-orange-500" disabled={isPending}>
                     {
                         isPending ? <RiLoader4Line size={25} className="animate-spin"/> : "Login"
                     }
