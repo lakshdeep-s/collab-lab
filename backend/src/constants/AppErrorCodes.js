@@ -4,4 +4,7 @@ export const AppErrorCode = {
     AccessTokenNotFound: "AccessTokenNotFound",
     RefreshTokenNotFound: "RefreshTokenNotFound",
     AccessTokenExpired: "AccessTokenExpired",
+
+    TeamMemberAlreadyExists: "TeamMemberAlreadyExists",
+    ExistingPendingInvitation: "ExistingPendingInvitation"
 }

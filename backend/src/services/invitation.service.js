@@ -1,13 +1,15 @@
 import dotenv from "dotenv"
+import crypto from "node:crypto"
 dotenv.config()
-import { INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED } from "../constants/HTTPCodes.js"
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED } from "../constants/HTTPCodes.js"
 import { WorkspaceModel } from "../model/workspace.model.js"
 
-import {Resend} from "resend"
 import appAssert from "../utils/appAssert.js"
-
-const resend_key = process.env.RESEND_API_KEY
-const resend = new Resend(resend_key)
+import { UserModel } from "../model/user.model.js"
+import { AppErrorCode } from "../constants/AppErrorCodes.js"
+import { InvitationModel } from "../model/invitation.model.js"
+import { generateInvitationToken } from "../utils/tokenUtils.js"
+import { createInvitation, sendInvitation } from "../utils/invitationUtils.js"
 
 export const sendInvitationService = async (adminId, workspaceId, email) => {
     const workspace = await WorkspaceModel.findById(workspaceId)
@@ -16,17 +18,47 @@ export const sendInvitationService = async (adminId, workspaceId, email) => {
     const isAdmin = workspace.admins.includes(adminId)
     appAssert(isAdmin, "User is not an admin", UNAUTHORIZED)
 
-    //Send invitation email with link here
-    const {data, error} = await resend.emails.send({
-        from: "Acme <onboarding@resend.dev>",
-        to: [email],
-        subject: "Hello World",
-        html: "<strong>It Works</strong>"
+    const user = await UserModel.findOne({email})
+    if (!user) {
+        const token = generateInvitationToken()
+
+        createInvitation(token, email, workspaceId, adminId)
+
+        const invitationLink = `${process.env.CLIENT_URL}/register/${token}`
+
+        const {error} = sendInvitation(invitationLink, email, workspace.name)
+
+        if(error) {
+            appAssert(false, error.message, INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    // Handle invitation for existing user
+    const existingUser = workspace.members.includes(user._id)
+    appAssert(!existingUser, "User is already a member of the workspace", BAD_REQUEST, AppErrorCode.TeamMemberAlreadyExists)
+
+    const existingInvitation = await InvitationModel.findOne({
+        email,
+        workspaceId,
+        status: 'pending'
     })
+    if (existingInvitation) {
+        appAssert(false, "Invitation has been already sent to this email", BAD_REQUEST, AppErrorCode.ExistingPendingInvitation)
+    }
+
+    const token = generateInvitationToken()
+
+    createInvitation(token, email, workspaceId, adminId)
+
+    const invitationLink = `${process.env.CLIENT_URL}/invite/${token}`
+
+    const {error} = sendInvitation(invitationLink, email, workspace.name)
 
     if (error) {
         appAssert(false, error.message, INTERNAL_SERVER_ERROR)
     }
 
-    return data
+    return {
+        message: "Invitation sent successfully"
+    }
 }
