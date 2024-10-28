@@ -9,6 +9,7 @@ import {
     Form,
     FormControl,
     FormField,
+    FormLabel,
     FormItem,
     FormMessage,
 } from "@/components/ui/form"
@@ -37,8 +38,11 @@ const SignupForm = () => {
                     name="username"
                     render={({ field }) => (
                         <FormItem>
+                            <FormLabel className="font-medium">
+                                Username
+                            </FormLabel>
                             <FormControl>
-                                <Input placeholder="Username" {...field} className="placeholder:text-xsm"/>
+                                <Input placeholder="Acme" {...field} className="placeholder:text-xsm"/>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -49,8 +53,11 @@ const SignupForm = () => {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
+                            <FormLabel className="font-medium">
+                                Email
+                            </FormLabel>
                             <FormControl>
-                                <Input placeholder="Email" {...field} className="placeholder:text-xsm"/>
+                                <Input placeholder="acme@gmail.com" {...field} className="placeholder:text-xsm"/>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -61,8 +68,11 @@ const SignupForm = () => {
                     name="password"
                     render={({ field }) => (
                         <FormItem>
+                            <FormLabel className="font-medium">
+                                Password
+                            </FormLabel>
                             <FormControl>
-                                <Input placeholder="Password" {...field} type="password" className="placeholder:text-xsm"/>
+                                <Input placeholder="Enter password" {...field} type="password" className="placeholder:text-xsm"/>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
