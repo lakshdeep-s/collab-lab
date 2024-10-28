@@ -18,7 +18,7 @@ export const sendInvitationService = async (adminId, workspaceId, email) => {
 
     //Send invitation email with link here
     const {data, error} = await resend.emails.send({
-        from: "lakshdeepsinghsiddhu@gmail.com",
+        from: "Acme <onboarding@resend.dev>",
         to: [email],
         subject: "Hello World",
         html: "<strong>It Works</strong>"
