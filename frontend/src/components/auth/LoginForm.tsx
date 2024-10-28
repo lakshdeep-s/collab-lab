@@ -81,9 +81,8 @@ const LoginForm = () => {
                 />
                 {
                     isError && (
-                        <Alert variant="destructive">
-                            <RiAlertLine size={20}/>
-                            <AlertDescription>{error.message}</AlertDescription>
+                        <Alert variant="destructive" className="bg-red-600/10">
+                            <AlertDescription className="flex items-center gap-2"><RiAlertLine size={20}/> {error.message}</AlertDescription>
                         </Alert>
                     )
                 }

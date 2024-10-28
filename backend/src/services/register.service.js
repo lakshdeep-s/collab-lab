@@ -3,6 +3,7 @@ import appAssert from "../utils/appAssert.js"
 import { UserModel } from "../model/user.model.js"
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "../constants/HTTPCodes.js"
 import { generateAccessToken, generateRefreshToken } from "../utils/tokenUtils.js"
+import { AppErrorCode } from "../constants/AppErrorCodes.js"
 
 
 export const registerService = async (userData) => {
@@ -13,6 +14,7 @@ export const registerService = async (userData) => {
     !existingUser,
     "User already exists",
     BAD_REQUEST,
+    AppErrorCode.ExistingUser
   )
 
   const hashedPassword = await bcrypt.hash(password, 10)

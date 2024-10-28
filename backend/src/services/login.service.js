@@ -6,15 +6,16 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/tokenUtils.js"
+import { AppErrorCode } from "../constants/AppErrorCodes.js"
 
 export const loginService = async (userData) => {
   const { email, password } = userData
 
   const existingUser = await UserModel.findOne({ email: email })
-  appAssert(existingUser, "Invalid credentials", BAD_REQUEST, "INVALID_CREDENTIALS")
+  appAssert(existingUser, "Invalid credentials", BAD_REQUEST, AppErrorCode.InvalidUserCredientials)
 
   const isPasswordValid = await bcrypt.compare(password, existingUser.password)
-  appAssert(isPasswordValid, "Invalid credentials", BAD_REQUEST, "INVALID_CREDENTIALS")
+  appAssert(isPasswordValid, "Invalid credentials", BAD_REQUEST, AppErrorCode.InvalidUserCredientials)
 
   existingUser.lastLogin = new Date();
   await existingUser.save();

@@ -10,8 +10,8 @@ const c = AuthHeaderContent
 
 const LoginPage = () => {
   return (
-    <div className="centered-fullscreen min-h-screen font-primary">
-      <div className="p-6 rounded-lg form-card">
+    <div className="centered-fullscreen min-h-screen font-primary bg-slate-50">
+      <div className="p-6 rounded-lg form-card bg-white">
         {/* Header Content */}
         <div className="flex flex-col">
           <RiAccountCircleFill size={40} className="mx-auto mb-3 text-brand"/>

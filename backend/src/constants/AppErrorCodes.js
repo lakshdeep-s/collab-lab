@@ -1,4 +1,7 @@
 export const AppErrorCode = {
+    InvalidUserCredientials: "InvalidUserCredentials",
+    ExistingUser: "ExistingUser",
+
     InvalidAccessToken: "InvalidAccessToken",
     InvalidRefreshToken: "InvalidRefreshToken",
     AccessTokenNotFound: "AccessTokenNotFound",

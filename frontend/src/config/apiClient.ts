@@ -32,6 +32,19 @@ API.interceptors.response.use(
                 })
             }
         }
+
+        if (status === 400 && data?.appErrorCode === 'InvalidUserCredentials') {
+            return Promise.reject(new Error('Invalid email or password'))
+        }
+
+        if (status === 400 && data?.appErrorCode === 'ExistingUser') {
+            return Promise.reject(new Error('User with this email already exists'))
+        }
+
+        if (status === 500) {
+            return Promise.reject(new Error('Something went wrong, please try again later'))
+        }
+
         return Promise.reject(error)
     }
 )

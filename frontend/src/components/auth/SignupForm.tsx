@@ -97,14 +97,13 @@ const SignupForm = () => {
                 {
                     isError && (
                         <Alert variant="destructive">
-                            <RiAlertLine size={20} />
-                            <AlertDescription>{error.message}</AlertDescription>
+                            <AlertDescription className="flex items-center gap-2"><RiAlertLine size={20}/> {error.message}</AlertDescription>
                         </Alert>
                     )
                 }
                 <Button type="submit" className="w-full bg-brand hover:bg-orange-500 font-semibold" disabled={isPending}>
                     {
-                        isPending ? <RiLoader4Line size={25} className="animate-spin" /> : "Login"
+                        isPending ? <RiLoader4Line size={25} className="animate-spin" /> : "Signup"
                     }
                 </Button>
             </form>
