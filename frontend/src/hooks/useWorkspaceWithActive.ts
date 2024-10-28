@@ -25,7 +25,8 @@ const useWorkspacesWithActive = () => {
   const { mutate: activateWorkspace } = useMutation({
     mutationFn: setActiveWorkspace,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workspaces"] })
+      queryClient.invalidateQueries({ queryKey: ["workspaces"]})
+      queryClient.invalidateQueries({ queryKey: ["members"]})
     },
     onError: (error) => {
       console.error("Error activating workspace:", error)

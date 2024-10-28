@@ -24,6 +24,18 @@ export function convertToLocaleString(
   return date.toLocaleString(locale, options);
 }
 
+export const formatLastLogin = (date: Date) => {
+  return date.toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+};
+
 export const sortWorkspaces = (workspaces: WorkspaceData[]) => {
   return workspaces.sort(
     (a,b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()

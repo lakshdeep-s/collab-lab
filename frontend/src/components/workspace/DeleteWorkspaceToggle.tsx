@@ -47,7 +47,7 @@ const DeleteWorkspaceToggle = () => {
     return (
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <AlertDialogTrigger asChild>
-                <Button disabled={isPending} variant="destructive" type="button" onClick={handleDelete}>Delete Workspace</Button>
+                <Button disabled={isPending} className="border border-red-500/50 bg-red-600/5 hover:bg-red-600/10 text-red-600" type="button" onClick={handleDelete}>Delete Workspace</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

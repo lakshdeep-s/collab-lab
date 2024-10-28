@@ -103,7 +103,7 @@ const EditWorkspaceForm: FC<IEditWorkspaceFormProps> = ({ workspace }) => {
         <div className="flex justify-between items-center">
           <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <AlertDialogTrigger asChild>
-              <Button disabled={isPending} type="button" className="text-xsm text-white" onClick={form.handleSubmit(onSubmit)}>Save Changes</Button>
+              <Button disabled={isPending} type="button" className="bg-brand hover:bg-orange-500 text-xsm text-white" onClick={form.handleSubmit(onSubmit)}>Save Changes</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>

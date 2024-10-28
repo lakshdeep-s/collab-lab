@@ -9,8 +9,8 @@ interface TeamMemberListProps {
   workspaceId?: string
 }
 
-const TeamMemberList: FC<TeamMemberListProps> = ({ isAdminAccess = false, workspaceId}) => {
-  const {members} = useGetMembers(workspaceId ? workspaceId : "")
+const TeamMemberList: FC<TeamMemberListProps> = ({ isAdminAccess = false, workspaceId }) => {
+  const { members } = useGetMembers(workspaceId ? workspaceId : "")
   const admin = members?.admins || []
   const member = members?.members || []
   return (
@@ -34,14 +34,21 @@ const TeamMemberList: FC<TeamMemberListProps> = ({ isAdminAccess = false, worksp
           <span><Button className="flex items-center gap-3 text-muted-foreground" variant={'secondary'}><RiAddCircleFill /> Add Member</Button></span>
         }</h2>
         <div className="space-y-4">
-          {member.map((mem, index) => (
-            <TeamMemberCard
-              key={index}
-              member={mem}
-              type="member"
-              isAdminAccess={isAdminAccess}
-            />
-          ))}
+          {
+            member.length === 0 ? (
+              <p className="text-muted-foreground px-6 py-6 border rounded-lg shadow-md">
+                No collaborators found, invite some instead...
+              </p>
+            ) :
+            member.map((mem, index) => (
+              <TeamMemberCard
+                key={index}
+                member={mem}
+                type="member"
+                isAdminAccess={isAdminAccess}
+              />
+            ))
+          }
         </div>
       </div>
     </div>

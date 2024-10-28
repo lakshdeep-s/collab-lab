@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { formatLastLogin } from "@/lib/utils"
 
 interface TeamMemberCardProps {
   member: TeamMember
@@ -16,7 +17,7 @@ const TeamMemberCard: FC<TeamMemberCardProps> = ({ member, isAdminAccess, type})
   const isAdmin = type === 'admin'
 
   return (
-    <Card className={`w-full ${isAdmin ? 'border-primary' : ''}`}>
+    <Card className={`w-full`}>
       <CardContent className="p-4">
         <div className="flex items-center space-x-4">
           <div className="w-2/5 sm:w-1/3 flex items-center space-x-2">
@@ -32,8 +33,8 @@ const TeamMemberCard: FC<TeamMemberCardProps> = ({ member, isAdminAccess, type})
           </div>
           
           <div className="w-1/3 hidden md:block">
-            <span className="text-xs text-muted-foreground">
-              Last Login: {member.lastLogin.toLocaleString()}
+            <span className="text-xs text-green-500">
+              Last Login: {formatLastLogin(member.lastLogin)}
             </span>
           </div>
           
