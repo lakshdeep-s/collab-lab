@@ -4,6 +4,7 @@ import { InvitationModel } from "../model/invitation.model.js";
 import { Resend } from "resend";
 
 const resendKey = process.env.RESEND_API_KEY
+const resend = new Resend(resendKey);
 
 export const createInvitation = async (token, email, workspaceId, adminId) => {
     const invitation = await InvitationModel.create({   
