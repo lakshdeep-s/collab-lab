@@ -36,7 +36,7 @@ export const sendInvitationService = async (adminId, workspaceId, email) => {
 
     createInvitation(token, email, workspaceId, adminId)
 
-    const invitationLink = `${config.CLIENT_URL}`
+    const invitationLink = `${config.CLIENT_URL}/invitation/${token}`
 
     const {error} = sendInvitation(invitationLink, email, workspace.name)
 

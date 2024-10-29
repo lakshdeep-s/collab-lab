@@ -14,6 +14,8 @@ import AccountSettings from "./pages/AccountSettingsPage";
 import CreateWorkspacePage from "./pages/CreateWorkspacePage";
 import Workspace from "./pages/WorkspacePage";
 import DevelopmentProvider from "./providers/DevelopmentProvider";
+import InvitationPage from "./pages/InvitationPage";
+import InvitationProvider from "./providers/InvitationProvider";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +70,21 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <SignupPage />,
   },
+  {
+    path: "/invitation",
+    element: <NotFound />,
+  },
+  {
+    path: "/invitation/:token",
+    element: <InvitationProvider />,
+    children: [
+      {
+        index: true,
+        element: <InvitationPage />
+      }
+    ],
+    errorElement: <NotFound />
+  }
 ],
 );
 
