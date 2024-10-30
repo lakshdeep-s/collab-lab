@@ -1,11 +1,19 @@
 import {createContext, useContext} from "react"
 
+export type InvitationData = {
+    userId: string | null
+    isUser: boolean
+    email: string
+    workspaceId: string,
+    invitedBy: string,
+}
+
 export type InvitationContextType = {
-    invitationData: string,
+    invitationData: InvitationData | null,
     token: string
 }
 
-const InvitationContext = createContext<InvitationContextType>({invitationData: '', token: ''})
+const InvitationContext = createContext<InvitationContextType | undefined>(undefined)
 
 export const useInvitation = () => {
     const context = useContext(InvitationContext)

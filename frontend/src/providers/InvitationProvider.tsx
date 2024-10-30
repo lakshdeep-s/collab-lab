@@ -1,13 +1,13 @@
 import { Navigate, useParams, Outlet } from "react-router-dom"
 import { useState, useEffect } from "react"
-// import API from "@/config/apiClient"
-import InvitationContext from "@/contexts/InvitationContext"
+import InvitationContext, { InvitationData } from "@/contexts/InvitationContext"
+import axios from "axios"
 
 const InvitationProvider = () => {
-    const { token } = useParams()
+    const { token } = useParams<{ token: string }>()
     const [isValidating, setIsValidating] = useState(true)
     const [isValid, setIsValid] = useState(false)
-    const [invitationData, setInvitationData] = useState<string>('')
+    const [invitationData, setInvitationData] = useState<InvitationData | null>(null)
 
     useEffect(() => {
         const validateInvitation = async () => {
@@ -17,14 +17,15 @@ const InvitationProvider = () => {
             }
 
             try {
-                // If existing user -> send their credentials and add the user to the db
-                // If not a user send with a flag that its a new user and he needs to regsiter, then add him to the database
-                const response = "Invite is valid - [DEMO]"
-                setInvitationData(response)
+                const response = await axios.get<InvitationData>(`${import.meta.env.VITE_API_URL}/api/validate-invitation/${token}`);
+                console.log(response.data)
+                setInvitationData(response.data)
                 setIsValid(true)
                 setIsValidating(false)
             } catch (error) {
+                console.error("Failed to validate invitation:", error);
                 setIsValid(false)
+            } finally {
                 setIsValidating(false)
             }
         }
@@ -40,11 +41,11 @@ const InvitationProvider = () => {
     }
 
     if (!token || !isValid) {
-        return <Navigate to={"/404"} replace/>
+        return <Navigate to={"/404"} replace />
     }
 
     return (
-        <InvitationContext.Provider value={{invitationData, token}}>
+        <InvitationContext.Provider value={{ invitationData, token }}>
             <Outlet />
         </InvitationContext.Provider>
     )

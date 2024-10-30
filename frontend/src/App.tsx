@@ -13,7 +13,6 @@ import Team from "./pages/TeamsPage";
 import AccountSettings from "./pages/AccountSettingsPage";
 import CreateWorkspacePage from "./pages/CreateWorkspacePage";
 import Workspace from "./pages/WorkspacePage";
-import DevelopmentProvider from "./providers/DevelopmentProvider";
 import InvitationPage from "./pages/InvitationPage";
 import InvitationProvider from "./providers/InvitationProvider";
 
@@ -39,7 +38,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/projects",
-            element: <Projects/>
+            element: <Projects />
           },
           {
             path: "/settings",
@@ -85,8 +84,7 @@ const router = createBrowserRouter([
     ],
     errorElement: <NotFound />
   }
-],
-);
+]);
 
 // Main App component
 const App = () => {

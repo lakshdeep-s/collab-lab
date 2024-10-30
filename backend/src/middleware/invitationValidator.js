@@ -3,15 +3,17 @@ import { BAD_REQUEST } from "../constants/HTTPCodes.js"
 import appAssert from "../utils/appAssert.js"
 import { InvitationModel } from "../model/invitation.model.js"
 
-const invitationValidator = (req, res, next) => {
-    const {token} = req.params
-    appAssert(token, "Invitation Token not found", BAD_REQUEST, AppErrorCode.InvitationTokenNotFound)
+const invitationValidator = async (req, res, next) => {
+    const { token } = req.params;
+    console.log('Token received in middleware:', token);
 
-    const invitation = InvitationModel.findOne({token})
-    appAssert(invitation, "Invalid Invitation Token", BAD_REQUEST, AppErrorCode.InvalidInvitationToken)
+    appAssert(token, "Invitation Token not found", BAD_REQUEST, AppErrorCode.InvitationTokenNotFound);
 
-    req.invitation = invitation
-    next()
-}
+    const invitation = await InvitationModel.findOne({ token });
+    appAssert(invitation, "Invalid Invitation Token", BAD_REQUEST, AppErrorCode.InvalidInvitationToken);
 
-export default invitationValidator
+    req.invitation = invitation;
+    next();
+};
+
+export default invitationValidator;
