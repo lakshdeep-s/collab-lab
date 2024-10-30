@@ -9,5 +9,7 @@ export const AppErrorCode = {
     AccessTokenExpired: "AccessTokenExpired",
 
     TeamMemberAlreadyExists: "TeamMemberAlreadyExists",
-    ExistingPendingInvitation: "ExistingPendingInvitation"
+    ExistingPendingInvitation: "ExistingPendingInvitation",
+    InvitationTokenNotFound: "InvitationTokenNotFound",
+    InvalidInvitationToken: "InvalidInvitationToken"
 }

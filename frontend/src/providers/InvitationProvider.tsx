@@ -17,6 +17,8 @@ const InvitationProvider = () => {
             }
 
             try {
+                // If existing user -> send their credentials and add the user to the db
+                // If not a user send with a flag that its a new user and he needs to regsiter, then add him to the database
                 const response = "Invite is valid - [DEMO]"
                 setInvitationData(response)
                 setIsValid(true)
