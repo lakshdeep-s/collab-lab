@@ -2,9 +2,10 @@ import { useInvitation } from "@/contexts/InvitationContext"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { RiGroupLine } from "react-icons/ri";
+import RegisterAndJoinForm from "@/components/team/RegisterAndJoinForm";
 
 const InvitationPage = () => {
-    const { invitationData } = useInvitation()
+    const { invitationData, token} = useInvitation()
 
     // Change the data here depending on whether the invited person is a user or not
     const isUser = invitationData?.isUser
@@ -29,10 +30,7 @@ const InvitationPage = () => {
                             <Button className="mt-5 bg-green-500 hover:bg-green-600">Accept Invite</Button>
                         </div>
                     ) : (
-                        <div>
-                            <p>Sign up to join the workspace</p>
-                            <Button>Sign Up</Button>
-                        </div>
+                        <RegisterAndJoinForm token={token} email={invitationData?.email || ''}/>
                     )}
                 </CardContent>
             </Card>

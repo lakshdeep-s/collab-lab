@@ -111,3 +111,15 @@ export const getAllMembers = async (workspaceId: string): Promise<MemberResponse
     return Promise.reject(error);
   }
 };
+
+export const registerUserAndJoinTeam = async ({ username, email, password, token }: { username: string, email: string, password: string, token: string }) => {
+  try {
+    const response = await API.post(`/api/signup-and-join/${token}`, { username, email, password })
+    return response.data
+  } catch (error) {
+    if (error instanceof Error) {
+      return Promise.reject({ message: error.message })
+    }
+    return Promise.reject({ message: "An unknown error occurred" })
+  }
+}

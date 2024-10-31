@@ -122,8 +122,8 @@ export const getAllMembersService = async (workspaceId, userId) => {
 
   const admins = await Promise.all(workspace.admins.map(async (adminId) => {
     const admin = await UserModel.findById(adminId).lean()
-    return omitPasswordOnResponse(admin)
-  }))
+    return admin ? omitPasswordOnResponse(admin) : null
+  })).then(admins => admins.filter(Boolean))
 
   const nonAdminMembers = workspace.members.filter((memberId) => {
     return !workspace.admins.includes(memberId)
@@ -131,8 +131,8 @@ export const getAllMembersService = async (workspaceId, userId) => {
 
   const members = await Promise.all(nonAdminMembers.map(async (memberId) => {
     const member = await UserModel.findById(memberId).lean()
-    return omitPasswordOnResponse(member)
-  }))
+    return member ? omitPasswordOnResponse(member) : null
+  })).then(members => members.filter(Boolean))
 
   return {admins, members}
 }

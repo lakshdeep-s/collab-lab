@@ -14,6 +14,7 @@ import projectRouter from "./routes/projectRoutes.js"
 import taskRouter from "./routes/taskRoutes.js"
 import invitationRouter from "./routes/invitationRoutes.js"
 import validateInvitationRouter from "./routes/validateInvitationRoutes.js"
+import invitationValidator from "./middleware/invitationValidator.js"
 
 const app = express()
 const PORT = process.env.PORT || 3000
