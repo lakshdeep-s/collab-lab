@@ -3,6 +3,7 @@ import config from "../config/index.js"
 import { AppError } from "./AppError.js"
 import { UNAUTHORIZED } from "../constants/HTTPCodes.js"
 import { AppErrorCode } from "../constants/AppErrorCodes.js"
+import crypto from "node:crypto"
 
 export const accessTokenOptions = {
     expiresIn: "20m"
@@ -41,4 +42,8 @@ export const verifyToken = (token, options = {}) => {
 
         throw new AppError(message, statusCode, appErrorCode)
     }
+}
+
+export const generateInvitationToken = () => {
+    return crypto.randomBytes(32).toString('hex')
 }

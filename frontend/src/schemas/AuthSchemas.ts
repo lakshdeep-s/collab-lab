@@ -13,6 +13,6 @@ export const SignupFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z
     .string()
-    .min(8, { message: "Password must be atleast 5 characters long" })
-    .max(50, { message: "Password must be less than 16 characters long" }),
+    .min(5, { message: "Password must be atleast 5 characters long" })
+    .max(16, { message: "Password must be less than 16 characters long" }),
 })

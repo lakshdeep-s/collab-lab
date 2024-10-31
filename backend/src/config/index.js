@@ -18,6 +18,7 @@ const config = {
       maxAge: 2 * 60 * 60 * 1000,
       path: "/auth/refresh"  
     },
+    CLIENT_URL: 'http://localhost:5173'
   },
   production: {
     db: process.env.MONGO_URI,
@@ -38,6 +39,7 @@ const config = {
       maxAge: 2 * 60 * 60 * 1000,
       path: "/auth/refresh"  
     },
+    CLIENT_URL: process.env.CLIENT_URL
   },
 };
 

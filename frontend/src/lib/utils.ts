@@ -1,4 +1,4 @@
-import { WorkspaceData } from "@/types";
+import { UserData, WorkspaceData } from "@/types";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -23,6 +23,18 @@ export function convertToLocaleString(
 ): string {
   return date.toLocaleString(locale, options);
 }
+
+export const formatLastLogin = (date: Date) => {
+  return date.toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+};
 
 export const sortWorkspaces = (workspaces: WorkspaceData[]) => {
   return workspaces.sort(

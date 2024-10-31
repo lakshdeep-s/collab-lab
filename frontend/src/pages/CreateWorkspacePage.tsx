@@ -1,5 +1,6 @@
-import NewWorkspaceSection from "@/components/workspace/NewWorkspaceSection"
 import { NewWorkspaceContent } from "@/constants/WorkspaceContent"
+import NewWorkspaceForm from "@/components/workspace/NewWorkspaceForm"
+
 const c = NewWorkspaceContent
 const CreateWorkspacePage = () => {
   return (
@@ -10,8 +11,8 @@ const CreateWorkspacePage = () => {
         <p className="text-xsm text-muted-foreground">{c.header.subHeading}</p>
       </div>
 
-      <div className="px-6 py-6 rounded-md flex flex-col text-xsm gap-4 bg-white shadow-md">
-        <NewWorkspaceSection/>
+      <div className="px-6 py-6 rounded-md flex flex-col text-xsm gap-4 bg-white shadow-md max-w-[600px]">
+        <NewWorkspaceForm />
       </div>
     </div>
   )

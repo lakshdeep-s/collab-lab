@@ -11,6 +11,7 @@ import {
     Form,
     FormControl,
     FormField,
+    FormLabel,
     FormItem,
     FormMessage,
 } from "@/components/ui/form"
@@ -53,8 +54,11 @@ const LoginForm = () => {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
+                            <FormLabel className="font-medium">
+                                Email
+                            </FormLabel>
                             <FormControl>
-                                <Input placeholder="Email" {...field} className="placeholder:text-xsm"/>
+                                <Input placeholder="acme@gmail.com" {...field} className="placeholder:text-xsm"/>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -65,8 +69,11 @@ const LoginForm = () => {
                     name="password"
                     render={({ field }) => (
                         <FormItem>
+                            <FormLabel className="font-medium">
+                                Password
+                            </FormLabel>
                             <FormControl>
-                                <Input placeholder="Password" {...field} type="password" className="placeholder:text-xsm"/>
+                                <Input placeholder="Enter password" {...field} type="password" className="placeholder:text-xsm"/>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -74,15 +81,14 @@ const LoginForm = () => {
                 />
                 {
                     isError && (
-                        <Alert variant="destructive">
-                            <RiAlertLine size={20}/>
-                            <AlertDescription>{error.message}</AlertDescription>
+                        <Alert variant="destructive" className="bg-red-600/10">
+                            <AlertDescription className="flex items-center gap-2"><RiAlertLine size={20}/> {error.message}</AlertDescription>
                         </Alert>
                     )
                 }
-                <Button type="submit" className="w-full bg-brand hover:bg-orange-500 font-semibold">
+                <Button type="submit" className="w-full font-semibold bg-brand hover:bg-orange-500" disabled={isPending}>
                     {
-                        isPending ? <RiLoader4Line size={20}/> : "Login"
+                        isPending ? <RiLoader4Line size={25} className="animate-spin"/> : "Login"
                     }
                 </Button>
             </form>

@@ -3,10 +3,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
-import { RiAlertLine } from "react-icons/ri";
-import { RiLoader4Line } from "react-icons/ri";
-
-// Form Components Import
+import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -17,33 +14,43 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useNavigate } from "react-router-dom"
-import { register } from "@/lib/api"
+import { registerUserAndJoinTeam } from "@/lib/api"
+import { RiAlertLine, RiLoader4Line } from "react-icons/ri"
 import { Alert, AlertDescription } from "../ui/alert"
 
-const SignupForm = () => {
+// Component for Registration Form
+const RegisterAndJoinForm = ({ email, token }: { email: string, token: string }) => {
     const navigate = useNavigate()
+
+    // React Query Mutation for User Registration
     const {
-        mutate, error, isError, isPending
+        mutate: SignupAndJoin,
+        isPending,
+        isError,
+        error
     } = useMutation({
-        mutationFn: register,
+        mutationFn: registerUserAndJoinTeam,
         onSuccess: () => {
-            navigate("/", {
-                replace: true,
+            navigate("/login", {
+                replace: true
             })
+        },
+        onError: (error: any) => {
+            console.error("Registration Error:", error)
         }
     })
+
     const form = useForm<z.infer<typeof SignupFormSchema>>({
         resolver: zodResolver(SignupFormSchema),
         defaultValues: {
             username: "",
-            email: "",
+            email: email,
             password: "",
         }
     })
 
     function onSubmit(values: z.infer<typeof SignupFormSchema>) {
-        mutate(values)
+        SignupAndJoin({ username: values.username, email: values.email, password: values.password, token })
     }
 
     return (
@@ -54,26 +61,9 @@ const SignupForm = () => {
                     name="username"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className="font-medium">
-                                Username
-                            </FormLabel>
+                            <FormLabel className="font-medium">Username</FormLabel>
                             <FormControl>
                                 <Input placeholder="Acme" {...field} className="placeholder:text-xsm" />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel className="font-medium">
-                                Email
-                            </FormLabel>
-                            <FormControl>
-                                <Input placeholder="acme@gmail.com" {...field} className="placeholder:text-xsm" />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -84,9 +74,7 @@ const SignupForm = () => {
                     name="password"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className="font-medium">
-                                Password
-                            </FormLabel>
+                            <FormLabel className="font-medium">Password</FormLabel>
                             <FormControl>
                                 <Input placeholder="Enter password" {...field} type="password" className="placeholder:text-xsm" />
                             </FormControl>
@@ -94,21 +82,19 @@ const SignupForm = () => {
                         </FormItem>
                     )}
                 />
-                {
-                    isError && (
-                        <Alert variant="destructive">
-                            <AlertDescription className="flex items-center gap-2"><RiAlertLine size={20}/> {error.message}</AlertDescription>
-                        </Alert>
-                    )
-                }
+                {isError && (
+                    <Alert variant="destructive">
+                        <AlertDescription className="flex items-center gap-2">
+                            <RiAlertLine size={20} /> {(error as any)?.message || "An error occurred"}
+                        </AlertDescription>
+                    </Alert>
+                )}
                 <Button type="submit" className="w-full bg-brand hover:bg-orange-500 font-semibold" disabled={isPending}>
-                    {
-                        isPending ? <RiLoader4Line size={25} className="animate-spin" /> : "Signup"
-                    }
+                    {isPending ? <RiLoader4Line size={25} className="animate-spin" /> : "Join Team"}
                 </Button>
             </form>
         </Form>
     )
 }
 
-export default SignupForm
+export default RegisterAndJoinForm

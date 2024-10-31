@@ -1,5 +1,5 @@
 import { BAD_REQUEST, CREATED, NOT_FOUND, OK } from "../constants/HTTPCodes.js"
-import { createWorkspaceService, deleteWorkspaceService, getAllWorkspacesService, getWorkspaceService, updateWorkspaceService } from "../services/workspace.service.js"
+import { createWorkspaceService, deleteWorkspaceService, getAllMembersService, getAllWorkspacesService, getWorkspaceService, setActiveWorkspaceService, updateWorkspaceService } from "../services/workspace.service.js"
 import appAssert from "../utils/appAssert.js"
 
 export const createWorkspaceController = async (req, res) => {
@@ -69,5 +69,31 @@ export const getWorkspaceController = async (req, res) => {
 
     return res.status(OK).json({
         workspace: workspace
+    })
+}
+
+export const setActiveWorkspaceController = async (req, res) => {
+    const userId = req.userId
+    const workspaceId = req.params.workspaceId
+
+    appAssert(userId, "User ID is required", BAD_REQUEST);
+    appAssert(workspaceId, "Workspace ID is required", BAD_REQUEST);
+
+    const result = await setActiveWorkspaceService(workspaceId, userId);
+
+    return res.status(OK).json(result)
+}
+
+export const getAllMembersController = async (req, res) => {
+    const userId = req.userId
+    const workspaceId = req.params.workspaceId
+
+    appAssert(userId, "User ID is required", BAD_REQUEST);
+    appAssert(workspaceId, "Workspace ID is required", BAD_REQUEST);
+
+    const result = await getAllMembersService(workspaceId, userId);
+    
+    return res.status(OK).json({
+        data: result
     })
 }

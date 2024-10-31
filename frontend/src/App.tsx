@@ -1,5 +1,4 @@
-import { createBrowserRouter, RouterProvider, useNavigate, Outlet } from "react-router-dom"
-import { useEffect } from 'react'
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
 // Pages
 import LoginPage from "./pages/LoginPage";
@@ -7,19 +6,22 @@ import SignupPage from "./pages/SignupPage";
 import AuthProvider from "./providers/AuthProvider";
 import DashboardLayout from "./layouts/DashboardLayout";
 import NotFound from "./pages/NotFound";
-import Tasks from "./pages/Tasks";
-import Projects from "./pages/Projects";
-import Settings from "./pages/Settings";
-import Team from "./pages/Team";
-import AccountSettings from "./pages/AccountSettings";
+import Tasks from "./pages/TasksPage";
+import Projects from "./pages/ProjectsPage";
+import Settings from "./pages/WorkspaceSettingsPage";
+import Team from "./pages/TeamsPage";
+import AccountSettings from "./pages/AccountSettingsPage";
 import CreateWorkspacePage from "./pages/CreateWorkspacePage";
-import Workspace from "./pages/Workspace";
+import Workspace from "./pages/WorkspacePage";
+import InvitationPage from "./pages/InvitationPage";
+import InvitationProvider from "./providers/InvitationProvider";
 
 const router = createBrowserRouter([
   {
 
     path: "/",
     element: <AuthProvider />,
+    // element: <DevelopmentProvider />,
     children: [
       {
         path: "/",
@@ -36,7 +38,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/projects",
-            element: <Projects/>
+            element: <Projects />
           },
           {
             path: "/settings",
@@ -67,8 +69,22 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <SignupPage />,
   },
-],
-);
+  {
+    path: "/invitation",
+    element: <NotFound />,
+  },
+  {
+    path: "/invitation/:token",
+    element: <InvitationProvider />,
+    children: [
+      {
+        index: true,
+        element: <InvitationPage />
+      }
+    ],
+    errorElement: <NotFound />
+  }
+]);
 
 // Main App component
 const App = () => {
