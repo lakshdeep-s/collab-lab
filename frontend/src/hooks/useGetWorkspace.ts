@@ -10,8 +10,8 @@ export const useGetWorkspace = (workspaceId: string) => {
         queryFn: () => {
             return getWorkspace(workspaceId)
         },
-        enabled: !!workspaceId,
-        queryKey: ['current-workspace'],
+        enabled: !!workspaceId && workspaceId.trim().length > 0,
+        queryKey: ['current-workspace', workspaceId],
         staleTime: Infinity
     })
     return {workspace, ...rest}

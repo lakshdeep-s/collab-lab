@@ -13,8 +13,7 @@ const useAuth = () => {
         staleTime: Infinity
     })
     
-    const activeWorkspace = user?.currentWorkspace
-    const {workspace} = useGetWorkspace(activeWorkspace || '')
+    const { workspace } = useGetWorkspace(user?.currentWorkspace || '');
 
     return {user, activeWorkspace: workspace, ...rest}
 }

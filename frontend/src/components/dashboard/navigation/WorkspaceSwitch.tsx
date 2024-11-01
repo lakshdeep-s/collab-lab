@@ -6,7 +6,7 @@ import useWorkspaceToggle from "@/hooks/useWorkspaceToggle";
 const WorkspaceSwitch = () => {
   const {userWorkspaces, handleWorkspaceToggle, selectedWorkspace} = useWorkspaceToggle()
   // const { data, selectedWorkspace, handleWorkspaceChange } = useWorkspacesWithActive()
-
+  
   return userWorkspaces?.length ? (
     <WorkspaceSelect
       workspaces={userWorkspaces}

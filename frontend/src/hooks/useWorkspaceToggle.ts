@@ -4,6 +4,7 @@ import { WorkspaceData } from "@/types"
 import { useMutation } from "@tanstack/react-query"
 import { setActiveWorkspace } from "@/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
+import { useNavigate } from "react-router-dom"
 
 export type ActiveWorkspace = {
   workspaceName: string
@@ -11,6 +12,7 @@ export type ActiveWorkspace = {
 }
 
 const useWorkspaceToggle = () => {
+  const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { activeWorkspace, userWorkspaces } = useWorkspace()
 
@@ -25,15 +27,17 @@ const useWorkspaceToggle = () => {
       setSelectedWorkspace({
         workspaceId: activeWorkspace._id,
         workspaceName: activeWorkspace.name,
-      })
+      });
     }
-  }, [activeWorkspace, userWorkspaces])
+  }, [activeWorkspace]);
 
   // Set an active workspace (mutation)
   const { mutate: toggleActiveWorkspace } = useMutation({
     mutationFn: setActiveWorkspace,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user"] })
+      queryClient.invalidateQueries({ queryKey: ["current-workspace", selectedWorkspace?.workspaceId]})
+      navigate("/")
     },
     onError: (error) => {
       console.error("Error setting active workspace:", error)
@@ -52,7 +56,7 @@ const useWorkspaceToggle = () => {
         workspaceName: newWorkspace.name,
       })
     }
-    toggleActiveWorkspace(selectedWorkspace?.workspaceId as string)
+    toggleActiveWorkspace(newWorkspace?._id as string)
   }
   return {
     userWorkspaces,
