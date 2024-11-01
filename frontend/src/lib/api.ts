@@ -57,8 +57,8 @@ export const logout = async () => {
 
 export const getAllWorkspaces = async () => {
   try {
-    const response = await API.get("/api/workspace/get-all-workspaces")
-    return response
+    const response: AxiosResponse<WorkspaceData[]> = await API.get<WorkspaceData[]>("/api/workspace/get-all-workspaces")
+    return response.data
   } catch (error) {
     return Promise.reject(error)
   }
@@ -76,8 +76,8 @@ export const createWorkspace = async (workspaceData: NewWorkSpaceData) => {
 
 export const setActiveWorkspace = async (workspaceId: string) => {
   try {
-    const response = await API.put(`/api/workspace/set-active/${workspaceId}`)
-    return response
+    const response: AxiosResponse<WorkspaceData> = await API.put<WorkspaceData>(`/api/workspace/set-active/${workspaceId}`)
+    return response.data
   } catch (error) {
     return Promise.reject(error)
   }
@@ -85,7 +85,7 @@ export const setActiveWorkspace = async (workspaceId: string) => {
 
 export const updateWorkspace = async (workspaceId: string, workspaceData: NewWorkSpaceData) => {
   try {
-    const response = await API.put(`/api/workspace/update-workspace/${workspaceId}`, workspaceData)
+    const response: AxiosResponse<WorkspaceData> = await API.put<WorkspaceData>(`/api/workspace/update-workspace/${workspaceId}`, workspaceData)
     return response
   } catch (error) {
     return Promise.reject(error)

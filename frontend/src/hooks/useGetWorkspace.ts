@@ -11,7 +11,7 @@ export const useGetWorkspace = (workspaceId: string) => {
             return getWorkspace(workspaceId)
         },
         enabled: !!workspaceId,
-        queryKey: ['current-workspace', workspaceId],
+        queryKey: ['current-workspace'],
         staleTime: Infinity
     })
     return {workspace, ...rest}

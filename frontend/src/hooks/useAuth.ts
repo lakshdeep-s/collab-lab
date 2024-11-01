@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query"
+import useGetWorkspace from "./useGetWorkspace"
 import { getAuthenticatedUser } from "@/lib/api"
 import { UserData } from "@/types"
-import { AxiosResponse } from "axios"
 
-const useAuth = (options ={}) => {
+const useAuth = () => {
     const {
         data: user,
         ...rest
@@ -12,7 +12,11 @@ const useAuth = (options ={}) => {
         queryFn: getAuthenticatedUser,
         staleTime: Infinity
     })
-    return {user, ...rest}
+    
+    const activeWorkspace = user?.currentWorkspace
+    const {workspace} = useGetWorkspace(activeWorkspace || '')
+
+    return {user, activeWorkspace: workspace, ...rest}
 }
 
 export default useAuth

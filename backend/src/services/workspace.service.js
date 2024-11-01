@@ -72,7 +72,7 @@ export const updateWorkspaceService = async (
 
 export const getAllWorkspacesService = async (userId) => {
   const workspaces = await WorkspaceModel.find({ members: userId }).lean()
-  return { workspaces }
+  return workspaces
 }
 
 export const getWorkspaceService = async (workspaceId, userId) => {
