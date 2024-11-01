@@ -3,6 +3,7 @@ export type UserData = {
   username: string
   email: string
   lastLogin: Date
+  currentWorkspace: string
 }
 
 export type WorkspaceData = {

@@ -1,13 +1,13 @@
 import { NewWorkSpaceData } from "@/components/workspace/NewWorkspaceForm"
-import { MemberResponse} from "@/types"
+import { MemberResponse, UserData} from "@/types"
 import { API } from "@/config/apiClient"
 import { queryClient } from "@/config/reactQuery"
 import { AxiosResponse } from "axios"
 
 export const getAuthenticatedUser = async () => {
   try {
-    const response = await API.get("/user")
-    return response
+    const response: AxiosResponse<UserData> = await API.get<UserData>("/user")
+    return response.data
   } catch (error) {
     return Promise.reject(error)
   }
@@ -67,8 +67,8 @@ export const getAllWorkspaces = async () => {
 
 export const createWorkspace = async (workspaceData: NewWorkSpaceData) => {
   try {
-    const response = await API.post("/api/workspace/create-workspace", workspaceData)
-    return response
+    const response: AxiosResponse<WorkspaceData> = await API.post<WorkspaceData>("/api/workspace/create-workspace", workspaceData)
+    return response.data
   } catch (error) {
     return Promise.reject(error)
   }
@@ -100,6 +100,17 @@ export const deleteWorkspace = async (workspaceId: string) => {
     return Promise.reject(error)
   }
 }
+
+import { WorkspaceData } from "@/types"
+export const getWorkspace = async (workspaceId: string) => {
+  try {
+    const response: AxiosResponse<WorkspaceData> = await API.get<WorkspaceData>(`/api/workspace/get-workspace/${workspaceId}`)
+    return response.data
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
 
 export const getAllMembers = async (workspaceId: string): Promise<MemberResponse> => {
   try {

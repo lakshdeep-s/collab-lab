@@ -12,7 +12,7 @@ export const createWorkspaceController = async (req, res) => {
     const workspace = await createWorkspaceService(userId, name, description)
 
     return res.status(CREATED).json({
-        workspace: workspace
+        data: workspace
     })
 }
 
@@ -68,7 +68,7 @@ export const getWorkspaceController = async (req, res) => {
     const workspace = await getWorkspaceService(workspaceId, userId)
 
     return res.status(OK).json({
-        workspace: workspace
+        data: workspace
     })
 }
 

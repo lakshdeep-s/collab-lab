@@ -27,10 +27,6 @@ const WorkspaceSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    active: {
-      type: Boolean,
-      default: false,
-    }
   },
   { timestamps: true }
 )

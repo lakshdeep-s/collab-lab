@@ -7,9 +7,12 @@ export const userController = async (req, res) => {
   appAssert(user, NOT_FOUND, "User not found")
 
   return res.status(OK).json({
+    data: {
       userId: user._id,
       username: user.username,
       email: user.email,
       lastLogin: user.lastLogin,
+      currentWorkspace: user.currentWorkspace
+    }
   })
 }

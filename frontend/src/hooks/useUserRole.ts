@@ -10,7 +10,7 @@ const useUserRole = () => {
     let isAdmin = false;
 
     if (user && currentWorkspace) {
-      if (currentWorkspace.admins.includes(user.userId)) {
+      if (currentWorkspace?.admins.includes(user.userId)) {
         isAdmin = true;
       }
     }

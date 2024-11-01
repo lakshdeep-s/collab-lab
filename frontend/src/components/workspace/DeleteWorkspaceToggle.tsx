@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import { Button } from "../ui/button";
 import useWorkspacesWithActive from "@/hooks/useWorkspaceWithActive";
+
 const DeleteWorkspaceToggle = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const navigate = useNavigate();
