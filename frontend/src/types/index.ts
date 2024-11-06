@@ -15,7 +15,6 @@ export type WorkspaceData = {
   createdAt: Date,
   admins: UserData['userId'][],
   members: UserData['userId'][],
-  active: boolean
 }
 
 export interface TeamMember extends UserData{
