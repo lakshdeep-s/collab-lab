@@ -5,9 +5,11 @@ import { WorkspaceData } from "@/types"
 import { useMutation } from "@tanstack/react-query"
 import { setActiveWorkspace } from "@/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
+import { replace, useNavigate } from "react-router-dom"
 
 const useWorkspace = () => {
     const queryClient = useQueryClient()
+    const navigate = useNavigate()
     // Get the current workspace Id from a hook the returns the Id of the active workspace of the current authenticated user
     const {currentWorkspaceId} = useGetActiveWorkspace()
     // get all the workspaces associated with the current authenticated user
@@ -38,6 +40,9 @@ const useWorkspace = () => {
                 queryClient.invalidateQueries({queryKey: ["workspaces"]}),
                 queryClient.invalidateQueries({queryKey: ["current-workspace", newCurrentWorkspace._id]})
             ])
+            navigate("/", {
+                replace: true
+            })
         }
     })
 
