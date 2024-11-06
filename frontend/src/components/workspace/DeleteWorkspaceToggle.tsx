@@ -15,29 +15,31 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useState } from "react";
 import { Button } from "../ui/button";
-import useWorkspace from "@/hooks/useWorkspace";
+import useGetActiveWorkspace from "@/hooks/useGetActiveWorkspace";
 
 const DeleteWorkspaceToggle = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const {activeWorkspace} = useWorkspace()
+    const {currentWorkspaceId} = useGetActiveWorkspace()
 
     const {
         mutate: deleteWorkspaceMutation,
         isPending
     } = useMutation({
         mutationFn: deleteWorkspace,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["workspaces"] });
-            navigate("/", {
-                replace: true,
-            });
+        onSuccess: async() => {
+            await Promise.all([
+                queryClient.invalidateQueries({queryKey: ['user']}),
+                queryClient.invalidateQueries({queryKey: ['workspaces']}),
+                queryClient.invalidateQueries({queryKey: ['current-workspace', currentWorkspaceId]})
+            ])
+            navigate("/")
         },
     })
 
     const handleDialogContinue = () => {
-        deleteWorkspaceMutation(activeWorkspace?._id!);
+        deleteWorkspaceMutation(currentWorkspaceId || "");
     };
 
     const handleDelete = () => {
