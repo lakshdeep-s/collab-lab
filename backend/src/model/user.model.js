@@ -5,7 +5,6 @@ export const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true
     },
     email: {
         type: String,
@@ -19,6 +18,11 @@ export const UserSchema = new mongoose.Schema({
     lastLogin: {
         type: Date,
         default: Date.now
+    },
+    currentWorkspace: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "workspaces",
+        default: null
     }
 }, {timestamps: true})
 

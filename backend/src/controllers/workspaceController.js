@@ -12,7 +12,7 @@ export const createWorkspaceController = async (req, res) => {
     const workspace = await createWorkspaceService(userId, name, description)
 
     return res.status(CREATED).json({
-        workspace: workspace
+        data: workspace
     })
 }
 
@@ -27,7 +27,9 @@ export const deleteWorkspaceController = async (req, res) => {
 
     const result = await deleteWorkspaceService(workspaceId, userId)
 
-    return res.status(OK).json(result)
+    return res.status(OK).json({
+        data: result
+    })
 }
 
 export const updateWorkspaceController = async (req, res) => {
@@ -46,7 +48,9 @@ export const updateWorkspaceController = async (req, res) => {
 
     const workspace = await updateWorkspaceService(workspaceId, userId, workspaceData);
 
-    return res.status(OK).json({ workspace });
+    return res.status(OK).json({
+        data: workspace
+    });
 };
 
 export const getAllWorkspacesController = async (req, res) => {
@@ -55,7 +59,9 @@ export const getAllWorkspacesController = async (req, res) => {
 
     const workspaces = await getAllWorkspacesService(userId)
 
-    return res.status(OK).json(workspaces)
+    return res.status(OK).json({
+        data: workspaces
+    })
 }
 
 export const getWorkspaceController = async (req, res) => {
@@ -68,7 +74,7 @@ export const getWorkspaceController = async (req, res) => {
     const workspace = await getWorkspaceService(workspaceId, userId)
 
     return res.status(OK).json({
-        workspace: workspace
+        data: workspace
     })
 }
 
@@ -79,9 +85,11 @@ export const setActiveWorkspaceController = async (req, res) => {
     appAssert(userId, "User ID is required", BAD_REQUEST);
     appAssert(workspaceId, "Workspace ID is required", BAD_REQUEST);
 
-    const result = await setActiveWorkspaceService(workspaceId, userId);
+    const workspace = await setActiveWorkspaceService(workspaceId, userId);
 
-    return res.status(OK).json(result)
+    return res.status(OK).json({
+        data: workspace
+    })
 }
 
 export const getAllMembersController = async (req, res) => {
@@ -91,9 +99,9 @@ export const getAllMembersController = async (req, res) => {
     appAssert(userId, "User ID is required", BAD_REQUEST);
     appAssert(workspaceId, "Workspace ID is required", BAD_REQUEST);
 
-    const result = await getAllMembersService(workspaceId, userId);
+    const members = await getAllMembersService(workspaceId, userId);
     
     return res.status(OK).json({
-        data: result
+        data: members
     })
 }

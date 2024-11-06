@@ -15,12 +15,13 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useState } from "react";
 import { Button } from "../ui/button";
-import useWorkspacesWithActive from "@/hooks/useWorkspaceWithActive";
+import useWorkspace from "@/hooks/useWorkspace";
+
 const DeleteWorkspaceToggle = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const {currentWorkspace} = useWorkspacesWithActive()
+    const {activeWorkspace} = useWorkspace()
 
     const {
         mutate: deleteWorkspaceMutation,
@@ -36,7 +37,7 @@ const DeleteWorkspaceToggle = () => {
     })
 
     const handleDialogContinue = () => {
-        deleteWorkspaceMutation(currentWorkspace?._id!);
+        deleteWorkspaceMutation(activeWorkspace?._id!);
     };
 
     const handleDelete = () => {

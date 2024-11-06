@@ -1,4 +1,3 @@
-import React from 'react';
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { WorkspaceSchema } from "@/schemas/WorkspaceSchema";
@@ -31,7 +30,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { createWorkspace } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import useWorkspacesWithActive from "@/hooks/useWorkspaceWithActive";
+import useWorkspaceToggle from "@/hooks/useWorkspaceToggle";
 
 export type NewWorkSpaceData = {
     name: string;
@@ -40,11 +39,12 @@ export type NewWorkSpaceData = {
 }
 
 export default function NewWorkspaceForm() {
+    const {handleWorkspaceToggle} = useWorkspaceToggle()
+
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [workspaceData, setWorkspaceData] = useState<NewWorkSpaceData | null>(null);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const { handleWorkspaceChange } = useWorkspacesWithActive();
 
     const {
         mutate: createWorkspaceMutation,
@@ -54,9 +54,8 @@ export default function NewWorkspaceForm() {
         onSuccess: (newWorkspace) => {
             
             queryClient.invalidateQueries({ queryKey: ["workspaces"] });
-            
-            //@ts-ignore
-            handleWorkspaceChange(newWorkspace?.name)
+            queryClient.invalidateQueries({ queryKey: ["current-workspace"] });
+            handleWorkspaceToggle(newWorkspace?.name)
             
             navigate("/");
         },
