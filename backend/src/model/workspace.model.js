@@ -15,6 +15,10 @@ const WorkspaceSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    superAdmin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     admins: [
       {
         type: mongoose.Schema.Types.ObjectId,

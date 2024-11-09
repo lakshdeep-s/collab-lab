@@ -4,6 +4,7 @@ import appAssert from "../utils/appAssert.js"
 import { FORBIDDEN, NOT_FOUND } from "../constants/HTTPCodes.js"
 import omitPasswordOnResponse from "../utils/omitPasswordOnResponse.js"
 
+// Anyone can create a new user : (Becomes Super Admin)
 export const createWorkspaceService = async (userId, name, description) => {
   const user = await UserModel.findById(userId)
   appAssert(user, "User not found", NOT_FOUND)
@@ -12,6 +13,7 @@ export const createWorkspaceService = async (userId, name, description) => {
     name,
     description,
     createdBy: userId,
+    superAdmin: userId,
     admins: [userId],
     members: [userId],
   })
@@ -23,14 +25,14 @@ export const createWorkspaceService = async (userId, name, description) => {
 
   return workspace
 }
-
+// Acess : Super Admin
 export const deleteWorkspaceService = async (workspaceId, userId) => {
   const workspace = await WorkspaceModel.findById(workspaceId)
   appAssert(workspace, "Workspace not found", NOT_FOUND)
 
-  const isAdmin = workspace.admins.includes(userId)
+  const isSuperAdmin = workspace.superAdmin === userId
   appAssert(
-    isAdmin,
+    isSuperAdmin,
     "User is not authorized to delete this workspace",
     FORBIDDEN
   )
@@ -49,6 +51,7 @@ export const deleteWorkspaceService = async (workspaceId, userId) => {
   return { message: "Workspace deleted successfully" }
 }
 
+// Access : Super Admin
 export const updateWorkspaceService = async (
   workspaceId,
   userId,
@@ -57,9 +60,9 @@ export const updateWorkspaceService = async (
   const workspace = await WorkspaceModel.findById(workspaceId)
   appAssert(workspace, "Workspace not found", NOT_FOUND)
 
-  const isAdmin = workspace.admins.includes(userId)
+  const isSuperAdmin = workspace.superAdmin === userId
   appAssert(
-    isAdmin,
+    isSuperAdmin,
     "User is not authorized to update this workspace",
     FORBIDDEN
   )
@@ -70,6 +73,7 @@ export const updateWorkspaceService = async (
   return workspace
 }
 
+// Get All Workspaces for a user
 export const getAllWorkspacesService = async (userId) => {
   const workspaces = await WorkspaceModel.find({ members: userId }).lean()
   return workspaces
@@ -85,6 +89,7 @@ export const getWorkspaceService = async (workspaceId, userId) => {
   return workspace
 }
 
+// Set active workspace for a user
 export const setActiveWorkspaceService = async (workspaceId, userId) => {
   const workspace = await WorkspaceModel.findById(workspaceId)
   appAssert(workspace, "Workspace not found", NOT_FOUND)
@@ -97,7 +102,7 @@ export const setActiveWorkspaceService = async (workspaceId, userId) => {
   return workspace
 }
 
-
+// Get all the members of the workspace
 export const getAllMembersService = async (workspaceId, userId) => {
   const workspace = await WorkspaceModel.findById(workspaceId)
   appAssert(workspace, "Workspace not found", NOT_FOUND)
@@ -119,5 +124,9 @@ export const getAllMembersService = async (workspaceId, userId) => {
     return member ? omitPasswordOnResponse(member) : null
   })).then(members => members.filter(Boolean))
 
-  return {admins, members}
+  const superAdmin = omitPasswordOnResponse(
+    await UserModel.findById(workspace.superAdmin).lean().exec()
+  );
+
+  return {admins, members, superAdmin}
 }
