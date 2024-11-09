@@ -69,6 +69,12 @@ export const joinTeam = async (req, res) => {
         {new: true}
     )
 
+    await UserModel.findByIdAndUpdate(
+        userId,
+        {currentWorkspace: workspaceId},
+        {new: true}
+    )
+
     await InvitationModel.findByIdAndDelete(req.invitation._id)
 
     res.status(CREATED).json({
