@@ -12,7 +12,6 @@ export const createWorkspaceService = async (userId, name, description) => {
   const workspace = new WorkspaceModel({
     name,
     description,
-    createdBy: userId,
     superAdmin: userId,
     admins: [userId],
     members: [userId],
@@ -30,7 +29,7 @@ export const deleteWorkspaceService = async (workspaceId, userId) => {
   const workspace = await WorkspaceModel.findById(workspaceId)
   appAssert(workspace, "Workspace not found", NOT_FOUND)
 
-  const isSuperAdmin = workspace.superAdmin === userId
+  const isSuperAdmin = workspace.superAdmin == userId
   appAssert(
     isSuperAdmin,
     "User is not authorized to delete this workspace",
@@ -60,7 +59,7 @@ export const updateWorkspaceService = async (
   const workspace = await WorkspaceModel.findById(workspaceId)
   appAssert(workspace, "Workspace not found", NOT_FOUND)
 
-  const isSuperAdmin = workspace.superAdmin === userId
+  const isSuperAdmin = workspace.superAdmin == userId
   appAssert(
     isSuperAdmin,
     "User is not authorized to update this workspace",

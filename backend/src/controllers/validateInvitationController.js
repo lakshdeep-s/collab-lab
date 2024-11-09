@@ -36,7 +36,8 @@ export const signupAndJoinTeam = async (req, res) => {
     const newUser = await UserModel.create({
         username,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        currentWorkspace: workspaceId
     })
 
     const workspace = await WorkspaceModel.findById(workspaceId)
@@ -48,17 +49,29 @@ export const signupAndJoinTeam = async (req, res) => {
         {new: true}
     )
 
-    await WorkspaceModel.updateMany(
-        {members: newUser._id, active: true},
-        {$set: {active: false}}
-    )
-
-    workspace.active = true
-    await workspace.save()
-
     await InvitationModel.findByIdAndDelete(req.invitation._id)
     
     res.status(CREATED).json({
-        user: omitPasswordOnResponse(newUser.toObject()),
+        message: "Joined team successfully",
+    })
+}
+
+export const joinTeam = async (req, res) => {
+    const {workspaceId} = req.invitation
+    const {userId} = req.body
+
+    const workspace = await WorkspaceModel.findById(workspaceId)
+    appAssert(workspace, "Workspace not found", NOT_FOUND)
+
+    await WorkspaceModel.findByIdAndUpdate(
+        workspaceId,
+        {$push: {members: userId}},
+        {new: true}
+    )
+
+    await InvitationModel.findByIdAndDelete(req.invitation._id)
+
+    res.status(CREATED).json({
+        message: "Joined team successfully",
     })
 }

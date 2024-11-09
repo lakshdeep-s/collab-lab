@@ -1,7 +1,7 @@
 import express from "express"
 import invitationValidator from "../middleware/invitationValidator.js"
 import { errorCatcher } from "../utils/errorCatcher.js"
-import { signupAndJoinTeam, validateInvitationController } from "../controllers/validateInvitationController.js"
+import { joinTeam, signupAndJoinTeam, validateInvitationController } from "../controllers/validateInvitationController.js"
 
 const validateInvitationRouter = express.Router()
 
@@ -12,5 +12,6 @@ validateInvitationRouter.get(
 )
 
 validateInvitationRouter.post('/signup-and-join/:token', invitationValidator, errorCatcher(signupAndJoinTeam))
+validateInvitationRouter.post("/join/:token", invitationValidator, errorCatcher(joinTeam))
 
 export default validateInvitationRouter

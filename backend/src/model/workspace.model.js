@@ -10,14 +10,10 @@ const WorkspaceSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
     superAdmin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     admins: [
       {
