@@ -13,19 +13,22 @@ const InvitationPage = () => {
     const { invitationData, token} = useInvitation()
     const [error, setError] = useState<string | null>(null)
     const [joining, setJoining] = useState<boolean>(false)
-    const [success, setSuccess] = useState<string | null>(null)
 
     // Change the data here depending on whether the invited person is a user or not
     const isUser = invitationData?.isUser
 
-    const handleAcceptInvite = async() => {
+    const handleAcceptInvite = async () => {
         setJoining(true)
         setError(null)
-        setSuccess(null)
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/join/${token}`)
-            if (response.status === 200) {
-                setSuccess("Successfully joined workspace, proceed to login")
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/join/${token}`, {
+                userId: invitationData?.userId,
+            })
+            if (response.status === 201) {
+                console.log("Successfully joined workspace")
+                navigate("/login", {
+                    replace: true
+                })
             } else {
                 console.log(error)
                 setError("Failed to join the workspace")
@@ -35,12 +38,6 @@ const InvitationPage = () => {
         }finally {
             setJoining(false)
         }
-    }
-
-    const redirectLogin = () => {
-        navigate("/login", {
-            replace: true
-        })
     }
 
     return (
@@ -69,15 +66,6 @@ const InvitationPage = () => {
                             >
                                 {joining ? <RiCircleLine size={20} className="animate-spin text-white"/> : 'Accept Invite'}
                             </Button>
-
-                            {success && 
-                                <div>
-                                    <span className="text-green-500 text-sm mt-2">{success}</span>
-                                    <Button variant={'secondary'} onClick={redirectLogin}>
-                                        Login
-                                    </Button>
-                                </div> 
-                            }
                         </div>
                     ) : (
                         <RegisterAndJoinForm token={token} email={invitationData?.email || ''}/>
