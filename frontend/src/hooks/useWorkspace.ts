@@ -5,7 +5,7 @@ import { WorkspaceData } from "@/types"
 import { useMutation } from "@tanstack/react-query"
 import { setActiveWorkspace } from "@/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
-import { replace, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const useWorkspace = () => {
     const queryClient = useQueryClient()
@@ -37,7 +37,7 @@ const useWorkspace = () => {
             console.log(newCurrentWorkspace.name)
             await Promise.all([
                 queryClient.invalidateQueries({queryKey: ["user"]}),
-                queryClient.invalidateQueries({queryKey: ["workspaces"]}),
+                // queryClient.invalidateQueries({queryKey: ["workspaces"]}),
                 queryClient.invalidateQueries({queryKey: ["current-workspace", newCurrentWorkspace._id]})
             ])
             navigate("/", {
