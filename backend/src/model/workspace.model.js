@@ -10,7 +10,7 @@ const WorkspaceSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
-    createdBy: {
+    superAdmin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,

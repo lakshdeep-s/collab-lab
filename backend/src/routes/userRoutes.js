@@ -6,4 +6,5 @@ import { userController } from "../controllers/userController.js"
 
 userRouter.get("/", errorCatcher(userController))
 
+
 export default userRouter
