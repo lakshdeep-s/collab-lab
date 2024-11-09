@@ -27,10 +27,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
 
-import { createWorkspace } from "@/lib/api";
+import { createWorkspace, getWorkspace } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import useWorkspaceToggle from "@/hooks/useWorkspaceToggle";
+import useGetActiveWorkspace from "@/hooks/useGetActiveWorkspace";
 
 export type NewWorkSpaceData = {
     name: string;
@@ -39,24 +39,33 @@ export type NewWorkSpaceData = {
 }
 
 export default function NewWorkspaceForm() {
-    const {handleWorkspaceToggle} = useWorkspaceToggle()
-
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [workspaceData, setWorkspaceData] = useState<NewWorkSpaceData | null>(null);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+
+    const {currentWorkspaceId} = useGetActiveWorkspace()
 
     const {
         mutate: createWorkspaceMutation,
         isPending,
     } = useMutation({
         mutationFn: createWorkspace,
-        onSuccess: (newWorkspace) => {
+        onSuccess: async (newWorkspace) => {
+            await Promise.all([
+                queryClient.invalidateQueries({queryKey: ['user']}),
+                queryClient.invalidateQueries({queryKey: ['workspaces']}),
+                queryClient.invalidateQueries({queryKey: ['current-workspace', currentWorkspaceId]})
+            ])
             
-            queryClient.invalidateQueries({ queryKey: ["workspaces"] });
-            queryClient.invalidateQueries({ queryKey: ["current-workspace"] });
-            handleWorkspaceToggle(newWorkspace?.name)
-            
+            await queryClient.prefetchQuery({
+                queryKey: ['current-workspace', newWorkspace._id],
+                queryFn: () => {
+                    return getWorkspace(newWorkspace._id)
+                },
+                staleTime: Infinity
+            })
+
             navigate("/");
         },
         onError: (error) => {

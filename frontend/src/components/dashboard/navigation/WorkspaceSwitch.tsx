@@ -1,17 +1,15 @@
 import WorkspaceSelect from "./WorkspaceSelect";
 import { Button } from "@/components/ui/button";
-import useWorkspaceToggle from "@/hooks/useWorkspaceToggle";
-// import useWorkspacesWithActive from "@/hooks/useWorkspaceWithActive";
+import useWorkspace from "@/hooks/useWorkspace";
 
 const WorkspaceSwitch = () => {
-  const {userWorkspaces, handleWorkspaceToggle, selectedWorkspace} = useWorkspaceToggle()
-  // const { data, selectedWorkspace, handleWorkspaceChange } = useWorkspacesWithActive()
+  const {currentWorkspace, userWorkspaces, handleWorkspaceSwitch} = useWorkspace()
   
   return userWorkspaces?.length ? (
     <WorkspaceSelect
       workspaces={userWorkspaces}
-      selectedWorkspace={selectedWorkspace?.workspaceName}
-      onWorkspaceChange={handleWorkspaceToggle}
+      selectedWorkspace={currentWorkspace}
+      onWorkspaceChange={handleWorkspaceSwitch}
     />
   ) : (
     <Button className="w-[200px]">New Workspace</Button>
