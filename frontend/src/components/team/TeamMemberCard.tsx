@@ -1,23 +1,24 @@
-import { FC } from "react"
-import { TeamMember } from "@/types"
-import { RiAccountCircleLine } from "react-icons/ri"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Card, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { formatLastLogin } from "@/lib/utils"
+import { FC } from "react";
+import { TeamMember } from "@/types";
+import { RiAccountCircleLine } from "react-icons/ri";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { formatLastLogin } from "@/lib/utils";
 
 interface TeamMemberCardProps {
-  member: TeamMember
-  isAdminAccess: boolean
-  type: 'admin' | 'member'
+  member: TeamMember;
+  isAdminAccess: boolean;
+  type: 'admin' | 'member' | 'superAdmin';
 }
 
-const TeamMemberCard: FC<TeamMemberCardProps> = ({ member, isAdminAccess, type}) => {
-  const isAdmin = type === 'admin'
+const TeamMemberCard: FC<TeamMemberCardProps> = ({ member, isAdminAccess, type }) => {
+  const isAdmin = type === 'admin';
+  const isSuperAdmin = type === 'superAdmin';
 
   return (
-    <Card className={`w-full`}>
+    <Card className="w-full">
       <CardContent className="p-4">
         <div className="flex items-center space-x-4">
           <div className="w-2/5 sm:w-1/3 flex items-center space-x-2">
@@ -48,15 +49,24 @@ const TeamMemberCard: FC<TeamMemberCardProps> = ({ member, isAdminAccess, type})
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                {/* All users can view profiles */}
                 <DropdownMenuItem>View Profile</DropdownMenuItem>
-                {isAdminAccess && !isAdmin && <DropdownMenuItem>Remove</DropdownMenuItem>}
+
+                {/* Super Admin can remove admins and members */}
+                {isSuperAdmin && isAdminAccess && isAdmin && <DropdownMenuItem>Remove Admin</DropdownMenuItem>}
+                {isSuperAdmin && isAdminAccess && !isAdmin && <DropdownMenuItem>Remove Member</DropdownMenuItem>}
+
+                {/* Admins can remove members but not other admins or super admin */}
+                {isAdminAccess && !isSuperAdmin && !isAdmin && (
+                  <DropdownMenuItem>Remove Member</DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 
-export default TeamMemberCard
+export default TeamMemberCard;

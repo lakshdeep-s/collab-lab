@@ -4,12 +4,17 @@ import EditWorkspaceForm from "@/components/workspace/EditWorkspaceForm"
 import TeamMemberList from "@/components/team/TeamMemberList"
 import useGetActiveWorkspace from "@/hooks/useGetActiveWorkspace"
 import useGetWorkspace from "@/hooks/useGetWorkspace"
+import ViewWorkspaceDetails from "@/components/workspace/ViewWorkspaceDetails"
 const c = WorkspaceSettingsContent
 
 const Settings = () => {
   const {currentWorkspaceId} = useGetActiveWorkspace()
-  const {workspace: currentWorkspace} = useGetWorkspace(currentWorkspaceId || '')
-  const isAdmin = useUserRole()
+  const {workspace: currentWorkspace, isLoading: workspaceLoading} = useGetWorkspace(currentWorkspaceId || '')
+  const {isAdmin, isSuperAdmin} = useUserRole()
+
+  if (!currentWorkspace || workspaceLoading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="h-full overflow-scroll px-4 font-primary flex flex-col gap-8 no-scrollbar">
@@ -20,21 +25,16 @@ const Settings = () => {
 
       {/* Workspace Data Section */}
       <div className="px-6 py-6 rounded-md flex flex-col text-xsm gap-4  max-w-[600px] bg-white shadow-md">
-
         {/* Admin */}
-        {isAdmin && 
-          <EditWorkspaceForm workspace={currentWorkspace ? currentWorkspace : undefined}/>
-        }         
-
-        {/* Non Admin */}
-        {
-          !isAdmin && 
-          <EditWorkspaceForm workspace={currentWorkspace ? currentWorkspace : undefined}/>
-        }
+        {isSuperAdmin ? (
+          <EditWorkspaceForm workspace={currentWorkspace} />
+        ) : (
+          <ViewWorkspaceDetails workspace={currentWorkspace} />
+        )}
       </div>
 
       <div className="px-6 py-6 rounded-md flex flex-col text-xsm gap-4 bg-white shadow-md max-w-[800px]">
-        <TeamMemberList isAdminAccess={isAdmin} workspaceId={currentWorkspace?._id}/>
+        <TeamMemberList isAdminAccess={isAdmin} isSuperAdminAccess={isSuperAdmin} workspaceId={currentWorkspace?._id}/>
       </div>
     </div>
   )

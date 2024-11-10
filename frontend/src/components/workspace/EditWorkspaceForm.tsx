@@ -37,7 +37,7 @@ interface IEditWorkspaceFormProps {
 
 const EditWorkspaceForm: FC<IEditWorkspaceFormProps> = ({ workspace }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [workspaceData, setWorkspaceData] = useState<NewWorkSpaceData>({name: workspace?.name!, description: workspace?.description, isActive: workspace?.active});
+  const [workspaceData, setWorkspaceData] = useState<NewWorkSpaceData>({name: workspace?.name!, description: workspace?.description});
   const queryClient = useQueryClient();
 
   const {
@@ -56,8 +56,7 @@ const EditWorkspaceForm: FC<IEditWorkspaceFormProps> = ({ workspace }) => {
     resolver: zodResolver(WorkspaceSchema),
     defaultValues: {
       name: workspace?.name || "",
-      description: workspace?.description || "",
-      active: workspace?.active || false,
+      description: workspace?.description || ""
     },
   });
 

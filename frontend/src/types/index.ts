@@ -3,8 +3,8 @@ export type UserData = {
   username: string
   email: string
   lastLogin: Date
-  currentWorkspace: string
-}
+  currentWorkspace: string,
+  }
 
 export type WorkspaceData = {
   _id: string
@@ -15,6 +15,7 @@ export type WorkspaceData = {
   createdAt: Date,
   admins: UserData['userId'][],
   members: UserData['userId'][],
+  superAdmin: UserData['userId']
 }
 
 export interface TeamMember extends UserData{
@@ -27,5 +28,6 @@ export interface TeamMember extends UserData{
 
 export type MemberResponse = {
   admins: TeamMember[]
-  members: TeamMember[]
+  members: TeamMember[],
+  superAdmin: TeamMember
 }

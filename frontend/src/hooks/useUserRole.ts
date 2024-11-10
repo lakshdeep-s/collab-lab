@@ -8,13 +8,17 @@ const useUserRole = () => {
     const {workspace: activeWorkspace} = useGetWorkspace(user?.currentWorkspace || '')
 
     let isAdmin = false;
+    let isSuperAdmin = false;
 
     if (user && activeWorkspace) {
       if (activeWorkspace?.admins.includes(user.userId)) {
         isAdmin = true;
       }
+      if (activeWorkspace?.superAdmin == user.userId) {
+        isSuperAdmin
+      }
     }
-  return isAdmin
+  return {isAdmin, isSuperAdmin}
 }
 
 export default useUserRole
