@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 
 const useGetMembers = (workspaceId: string) => {
   const { data: members, ...options } = useQuery<MemberResponse>({
-    queryKey: ["members"],
+    queryKey: ["members", workspaceId],
     queryFn: () => getAllMembers(workspaceId),
     enabled: !!workspaceId,
     staleTime: Infinity,

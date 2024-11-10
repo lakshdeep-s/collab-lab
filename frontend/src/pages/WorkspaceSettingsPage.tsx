@@ -16,6 +16,8 @@ const Settings = () => {
     return <div>Loading...</div>
   }
 
+  console.log(currentWorkspace?._id)
+
   return (
     <div className="h-full overflow-scroll px-4 font-primary flex flex-col gap-8 no-scrollbar">
       <div className="flex flex-col gap-2">

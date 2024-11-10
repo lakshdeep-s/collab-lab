@@ -1,7 +1,5 @@
 import { FC } from "react";
 import TeamMemberCard from "./TeamMemberCard";
-import { Button } from "../ui/button";
-import { RiAddCircleFill } from "react-icons/ri";
 import useGetMembers from "@/hooks/useGetMembers";
 import { DialogDemo } from "./AddTeamMemberButton";
 
