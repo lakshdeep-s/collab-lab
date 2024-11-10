@@ -8,7 +8,7 @@ const options = {
 }
 
 export const API = axios.create(options)
-const AppErrorCodes = ['InvalidAccessToken', 'AccessTokenNotFound', 'AccessTokenExpired', 'RefreshTokenNotFound', 'InvalidRefreshToken']
+const AppErrorCodes = ['InvalidAccessToken', 'AccessTokenNotFound', 'AccessTokenExpired', 'RefreshTokenNotFound', 'InvalidRefreshToken', 'TeamMemberAlreadyExists', 'ExistingPendingInvitation']
 
 const TokenRefreshClient = axios.create(options);
 TokenRefreshClient.interceptors.response.use((response) => response.data);
@@ -39,6 +39,14 @@ API.interceptors.response.use(
 
         if (status === 400 && data?.appErrorCode === 'ExistingUser') {
             return Promise.reject(new Error('User with this email already exists'))
+        }
+
+        if (status === 400 && data?.appErrorCode === 'TeamMemberAlreadyExists') {
+            return Promise.reject(new Error('User is already a member of this team'))
+        }
+
+        if (status === 400 && data?.appErrorCode === 'ExistingPendingInvitation') {
+            return Promise.reject(new Error('Invitation already sent to this email'))
         }
 
         if (status === 500) {

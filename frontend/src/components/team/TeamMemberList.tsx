@@ -3,6 +3,7 @@ import TeamMemberCard from "./TeamMemberCard";
 import { Button } from "../ui/button";
 import { RiAddCircleFill } from "react-icons/ri";
 import useGetMembers from "@/hooks/useGetMembers";
+import { DialogDemo } from "./AddTeamMemberButton";
 
 interface TeamMemberListProps {
   isAdminAccess?: boolean,
@@ -10,7 +11,7 @@ interface TeamMemberListProps {
   workspaceId?: string
 }
 
-const TeamMemberList: FC<TeamMemberListProps> = ({ isAdminAccess = false, workspaceId }) => {
+const TeamMemberList: FC<TeamMemberListProps> = ({ isAdminAccess = false, isSuperAdminAccess, workspaceId }) => {
   const { members } = useGetMembers(workspaceId ? workspaceId : "");
   const admin = members?.admins || [];
   const member = members?.members || [];
@@ -51,11 +52,9 @@ const TeamMemberList: FC<TeamMemberListProps> = ({ isAdminAccess = false, worksp
       <div>
         <h2 className="text-lg font-semibold tracking-tighter mb-4 flex items-center gap-4">
           Members 
-          {isAdminAccess && (
+          {(isAdminAccess || isSuperAdminAccess) && (
             <span>
-              <Button className="flex items-center gap-3 text-muted-foreground" variant="secondary">
-                <RiAddCircleFill /> Add Member
-              </Button>
+              <DialogDemo />
             </span>
           )}
         </h2>

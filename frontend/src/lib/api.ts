@@ -134,3 +134,12 @@ export const registerUserAndJoinTeam = async ({ username, email, password, token
     return Promise.reject({ message: "An unknown error occurred" })
   }
 }
+
+export const sendInvitation = async (email: string, workspaceId: string) => {
+  try {
+    const response = await API.post(`/api/invitation/${workspaceId}/invite`)
+    return response.data
+  } catch(error) {
+    return Promise.reject(error)
+  }
+}
