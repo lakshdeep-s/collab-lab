@@ -15,8 +15,10 @@ import { RiAddCircleFill } from "react-icons/ri"
 import { useMutation } from "@tanstack/react-query"
 import { sendInvitation } from "@/lib/api"
 import useGetActiveWorkspace from "@/hooks/useGetActiveWorkspace"
+import { useToast } from "@/hooks/use-toast"
 
 export function DialogDemo() {
+    const {toast} = useToast()
     const [email, setEmail] = useState<string>('')
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
     const {currentWorkspaceId} = useGetActiveWorkspace()
@@ -33,11 +35,19 @@ export function DialogDemo() {
     } = useMutation({
         mutationFn: () => sendInvitation(email, currentWorkspaceId),
         onSuccess: () => {
-            console.log("Invitation sent")
+            toast({
+                title: "Invitation Sent",
+                description: "An invitation has been sent to the user",
+                variant: "success"
+            })
             setEmail('')
         },
         onError: (error) => {
-            console.log(error)
+            toast({
+                title: "Error",
+                description: error.message,
+                variant: "destructive"
+            })
         }
     })
 
