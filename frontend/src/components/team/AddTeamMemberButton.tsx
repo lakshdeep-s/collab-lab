@@ -12,24 +12,48 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { RiAddCircleFill } from "react-icons/ri"
+import { useMutation } from "@tanstack/react-query"
+import { sendInvitation } from "@/lib/api"
+import useGetActiveWorkspace from "@/hooks/useGetActiveWorkspace"
 
 export function DialogDemo() {
     const [email, setEmail] = useState<string>('')
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
+    const {currentWorkspaceId} = useGetActiveWorkspace()
 
-    const handleEmailInput = (e: any) => {
+    if (!currentWorkspaceId) {
+        return <div>Loading...</div>
+    }
+
+    const {
+        mutate: invite,
+        isPending,
+        isError,
+        error
+    } = useMutation({
+        mutationFn: () => sendInvitation(email, currentWorkspaceId),
+        onSuccess: () => {
+            console.log("Invitation sent")
+            setEmail('')
+        },
+        onError: (error) => {
+            console.log(error)
+        }
+    })
+
+    const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
     }
 
     const InviteUser = () => {
-        console.log(email)
+        invite()
         setIsDialogOpen(false)
     }
 
     return (
-        <Dialog open={isDialogOpen}>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-                <Button className="flex items-center gap-3 text-muted-foreground" variant="secondary" onClick={() => setIsDialogOpen(prev => !prev)}>
+                <Button className="flex items-center gap-3 text-muted-foreground" variant="secondary" onClick={() => setIsDialogOpen(true)}>
                     <RiAddCircleFill /> Add Member
                 </Button>
             </DialogTrigger>
@@ -49,7 +73,12 @@ export function DialogDemo() {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button onClick={InviteUser}>Invite</Button>
+                    <Button 
+                        onClick={InviteUser}
+                        disabled={isPending}
+                    >
+                        {isPending ? 'Sending...' : 'Invite'}
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

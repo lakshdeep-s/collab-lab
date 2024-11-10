@@ -137,7 +137,7 @@ export const registerUserAndJoinTeam = async ({ username, email, password, token
 
 export const sendInvitation = async (email: string, workspaceId: string) => {
   try {
-    const response = await API.post(`/api/invitation/${workspaceId}/invite`)
+    const response = await API.post(`/api/invitation/${workspaceId}/invite`, {email})
     return response.data
   } catch(error) {
     return Promise.reject(error)
