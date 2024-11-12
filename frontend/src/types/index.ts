@@ -1,5 +1,5 @@
 export type UserData = {
-  userId: string
+  _id: string
   username: string
   email: string
   lastLogin: Date
@@ -10,12 +10,12 @@ export type WorkspaceData = {
   _id: string
   name: string
   description: string
-  createdBy: UserData['userId']
+  createdBy: UserData['_id']
   updatedAt: Date,
   createdAt: Date,
-  admins: UserData['userId'][],
-  members: UserData['userId'][],
-  superAdmin: UserData['userId']
+  admins: UserData['_id'][],
+  members: UserData['_id'][],
+  superAdmin: UserData['_id']
 }
 
 export interface TeamMember extends UserData{

@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { TeamMember } from "@/types";
+import { Link } from "react-router-dom";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -50,7 +51,11 @@ const TeamMemberCard: FC<TeamMemberCardProps> = ({ member, isAdminAccess, type }
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {/* All users can view profiles */}
-                <DropdownMenuItem>View Profile</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to={`/team/${member._id}`}>
+                    View Profile
+                  </Link>
+                </DropdownMenuItem>
 
                 {/* Super Admin can remove admins and members */}
                 {isSuperAdmin && isAdminAccess && isAdmin && <DropdownMenuItem>Remove Admin</DropdownMenuItem>}

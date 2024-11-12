@@ -33,13 +33,16 @@ const useWorkspace = () => {
     } = useMutation({
         mutationFn: setActiveWorkspace,
         onSuccess: async (newCurrentWorkspace) => {
-            queryClient.removeQueries({queryKey: ['members']})
+            await Promise.all([
+                queryClient.removeQueries({queryKey: ['members']})
+            ])
 
             await Promise.all([
                 queryClient.invalidateQueries({queryKey: ["user"]}),
                 queryClient.invalidateQueries({queryKey: ["members", newCurrentWorkspace._id]}),
                 queryClient.invalidateQueries({queryKey: ["workspaces"]}),
-                queryClient.invalidateQueries({queryKey: ["current-workspace", newCurrentWorkspace._id]})
+                queryClient.invalidateQueries({queryKey: ["current-workspace", newCurrentWorkspace._id]}),
+                queryClient.removeQueries({ queryKey: ["userProfile"] }),
             ])
             navigate("/", {
                 replace: true

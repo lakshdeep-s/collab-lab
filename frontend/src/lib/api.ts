@@ -123,6 +123,23 @@ export const getAllMembers = async (workspaceId: string): Promise<MemberResponse
   }
 };
 
+export type UserResponse = {
+  username: string,
+  email: string,
+  lastLogin: Date
+}
+
+export const getMember = async (workspaceId: string, userId: string) => {
+  try {
+    const response: AxiosResponse = await API.get(`/user/get-member`, {
+      params: { workspaceId, userId } 
+    });
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const registerUserAndJoinTeam = async ({ username, email, password, token }: { username: string, email: string, password: string, token: string }) => {
   try {
     const response = await API.post(`/api/signup-and-join/${token}`, { username, email, password })

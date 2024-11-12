@@ -9,12 +9,14 @@ import NotFound from "./pages/NotFound";
 import Tasks from "./pages/TasksPage";
 import Projects from "./pages/ProjectsPage";
 import Settings from "./pages/WorkspaceSettingsPage";
-import Team from "./pages/TeamsPage";
+import TeamLayout from "./layouts/TeamLayout";
 import AccountSettings from "./pages/AccountSettingsPage";
 import CreateWorkspacePage from "./pages/CreateWorkspacePage";
 import Workspace from "./pages/WorkspacePage";
 import InvitationPage from "./pages/InvitationPage";
 import InvitationProvider from "./providers/InvitationProvider";
+import TeamMembersPage from "./pages/TeamMembersPage";
+import UserProfilePage from "./pages/UserProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -46,7 +48,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/team",
-            element: <Team />
+            element: <TeamLayout />,
+          },
+          {
+            path: "/team/:userId",
+            element: <UserProfilePage />
           },
           {
             path: "/account",
